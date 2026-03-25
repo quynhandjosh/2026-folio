@@ -1210,8 +1210,7 @@
         <span class="cv-title" id="cv-title"></span>
         <div class="cv-tabs">
           <button type="button" class="cv-tab active" data-cv-tab="overview">Overview</button>
-          <button type="button" class="cv-tab" data-cv-tab="screens">Screens</button>
-          <button type="button" class="cv-tab" data-cv-tab="flow">Flow</button>
+          <button type="button" class="cv-tab" data-cv-tab="screens">Screens & Flow</button>
         </div>
       </div>
 
@@ -1276,25 +1275,6 @@ function buildCvOverviewHtml(c) {
     </div>`;
 }
 
-function buildCvScreensHtml(c) {
-  const firstDecision = c.decisions[0] || '';
-  return `
-    <div class="cv-placeholder cv-hero">[ Drop hero screen here ]</div>
-    <div class="cv-thumbs">
-      <div class="cv-placeholder"></div>
-      <div class="cv-placeholder"></div>
-      <div class="cv-placeholder"></div>
-    </div>
-    <div class="cv-annotation">
-      <div class="cv-annotation-label">Key decision</div>
-      <div class="cv-annotation-body">${firstDecision}</div>
-    </div>`;
-}
-
-function buildCvFlowHtml() {
-  return `<div class="cv-placeholder cv-flow-large">[ User flow diagram ]</div>`;
-}
-
 function renderCaseViewTab(tab) {
   if (!currentCaseId) return;
   const c = caseData[currentCaseId];
@@ -1302,9 +1282,28 @@ function renderCaseViewTab(tab) {
   if (tab === 'overview') {
     cvContentEl.innerHTML = buildCvOverviewHtml(c);
   } else if (tab === 'screens') {
-    cvContentEl.innerHTML = buildCvScreensHtml(c);
-  } else if (tab === 'flow') {
-    cvContentEl.innerHTML = buildCvFlowHtml();
+    cvContentEl.innerHTML = `
+      <div class="cv-section-label"
+           style="font-size:11px; font-weight:500;
+                  color:var(--text-hint); text-transform:uppercase;
+                  letter-spacing:0.07em;">
+        Screens
+      </div>
+      <div class="cv-placeholder cv-hero">[ Drop hero screen here ]</div>
+      <div class="cv-thumbs">
+        <div class="cv-placeholder"></div>
+        <div class="cv-placeholder"></div>
+        <div class="cv-placeholder"></div>
+      </div>
+      <div class="cv-section-label"
+           style="font-size:11px; font-weight:500;
+                  color:var(--text-hint); text-transform:uppercase;
+                  letter-spacing:0.07em; margin-top: 16px;">
+        Flow
+      </div>
+      <div class="cv-placeholder cv-flow-large">
+        [ User flow diagram ]
+      </div>`;
   }
 }
 
@@ -1337,6 +1336,7 @@ function populateCaseFooter(activeId) {
 function openCaseView(id) {
   const c = caseData[id];
   if (!c) return;
+  viewedCases.add(id);
   currentCaseId = id;
   cvTitleEl.textContent = c.title;
   populateCaseFooter(id);
@@ -1412,6 +1412,7 @@ const caseData = {
 
 // State
 let currentSection = 'intro';
+const viewedCases = new Set();
 const windowWrapper = document.querySelector('.window-wrapper');
 const mobileQuery = window.matchMedia('(max-width: 700px)');
 
@@ -1457,6 +1458,7 @@ mobileQuery.addEventListener('change', e => {
 function resetChat() {
   removeOptions();
   closeCaseView();
+  viewedCases.clear();
   messages.innerHTML = '';
   currentSection = 'intro';
   setActiveNav('intro');
@@ -1499,9 +1501,10 @@ function addClaudeMsg(html) {
   scroll();
 }
 
-function addOptions(pills) {
+function addOptions(pills, headerText) {
   clearSuggestionsImmediate();
-  const headerHtml = '<div class="suggestions-header">Hey there, you\'re here for:</div>';
+  const header = headerText === undefined || headerText === null ? 'Suggested' : headerText;
+  const headerHtml = `<div class="suggestions-header">${header.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
   const buttonsHtml = pills.map((p, i) =>
     `<button type="button" class="suggestion-btn" onclick="handleOption('${p.key}')"><span class="suggestion-num" aria-hidden="true">${i + 1}</span><span class="suggestion-label">${p.label}</span></button>`
   ).join('');
@@ -1554,10 +1557,6 @@ function handleOption(key) {
           <span class="tag">${c.type}</span> <span class="tag">${c.platform}</span>
         </div>`).join('');
       addClaudeMsg(`Here's a summary of my recent work. Click any project to go deeper.<div class="case-cards">${cards}</div>`);
-      addOptions([
-        { key: 'playground', label: 'Open playground →' },
-        { key: 'contact', label: 'Get in touch →' }
-      ]);
     }, 900);
 
   } else if (key.startsWith('case-')) {
@@ -1572,44 +1571,32 @@ function handleOption(key) {
     addTyping();
     setTimeout(() => {
       removeTyping();
-      addClaudeMsg(`
-        <div class="detail-block">
-          <div class="detail-stat">
-            <div>
-              <div class="stat-number">${c.stat}</div>
-              <div class="stat-label">${c.statLabel}</div>
-            </div>
-            <div class="stat-desc">${c.action}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-section-label">Problem</div>
-            <div class="detail-text">${c.problem}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-section-label">Team & Timeline</div>
-            <div class="detail-text">${c.team} · ${c.timeline}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-section-label">Key Insights</div>
-            <div class="detail-text"><ul>${c.insights.map(i => `<li>${i}</li>`).join('')}</ul></div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-section-label">Decisions</div>
-            <div class="detail-text"><ul>${c.decisions.map(d => `<li>${d}</li>`).join('')}</ul></div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-section-label">Reflection</div>
-            <div class="detail-text">${c.reflection}</div>
-          </div>
-          <div class="img-placeholder">[ mockup / screens go here ]</div>
-        </div>`);
+      addClaudeMsg(`Here's the quick version of <strong>${c.title}</strong> — the full story is in the panel.
+      <ul style="margin-top: 10px; padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
+        <li><strong>Problem:</strong> ${c.problem}</li>
+        <li><strong>Outcome:</strong> ${c.stat} — ${c.action}</li>
+        <li><strong>Reflection:</strong> ${c.reflection}</li>
+      </ul>`);
 
-      const others = Object.entries(caseData)
-        .filter(([id2]) => id2 !== id)
-        .slice(0, 2)
-        .map(([id2, c2]) => ({ key: `case-${id2}`, label: c2.title }));
-      addOptions([...others, { key: 'contact', label: 'Get in touch →' }]);
       openCaseView(id);
+
+      const allIds = Object.keys(caseData);
+      const unviewed = allIds.filter(cid => !viewedCases.has(cid));
+      if (unviewed.length > 0) {
+        const nextOptions = unviewed.slice(0, 2).map(cid => ({
+          key: 'case-' + cid,
+          label: caseData[cid].title
+        }));
+        addOptions([...nextOptions, { key: 'contact', label: 'Get in touch' }], "What's next?");
+      } else {
+        addOptions(
+          [
+            { key: 'contact', label: 'Get in touch' },
+            { key: 'principles', label: 'My principles' }
+          ],
+          "What's next?"
+        );
+      }
     }, 1100);
 
   } else if (key === 'playground') {
@@ -1666,8 +1653,24 @@ function handleOption(key) {
             <span class="contact-value">Download PDF</span>
           </a>
         </div>`);
-      addOptions([{ key: 'case-studies', label: '← Back to work' }]);
+      addOptions([{ key: 'case-studies', label: '← Back to work' }], 'Ready to connect?');
     }, 700);
+
+  } else if (key === 'principles') {
+    closeCaseView();
+    addClaudeMsg(`Three things shape how I work:<br><br>
+      <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
+        <li><strong>Clarity over cleverness</strong> — if users have to think, the design isn't done.</li>
+        <li><strong>Context drives decisions</strong> — metrics matter, but understanding behaviour matters more.</li>
+        <li><strong>Systems enable scale</strong> — strong foundations create speed and consistency.</li>
+      </ul>`);
+    addOptions(
+      [
+        { key: 'case-studies', label: 'See case studies' },
+        { key: 'contact', label: 'Get in touch' }
+      ],
+      "What's next?"
+    );
   }
 }
 
@@ -1683,11 +1686,14 @@ async function init() {
       <span class="tag">Systems thinker</span>
       <span class="tag">High-fidelity execution</span>`);
     setTimeout(() => {
-      addOptions([
-        { key: 'case-studies', label: 'See case studies' },
-        { key: 'playground',   label: 'Explore playground' },
-        { key: 'contact',      label: 'Get in touch' }
-      ]);
+      addOptions(
+        [
+          { key: 'case-studies', label: 'See case studies' },
+          { key: 'playground', label: 'Explore playground' },
+          { key: 'contact', label: 'Get in touch' }
+        ],
+        "Hey, I'm here for:"
+      );
     }, 200);
   }, 900);
 }
