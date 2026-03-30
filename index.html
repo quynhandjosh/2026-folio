@@ -9,12 +9,12 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --sidebar-bg: #1C1C1A;
+    --sidebar-bg: #160b03;
     --sidebar-text: #E8E3D9;
     --sidebar-muted: rgba(232,227,217,0.45);
     --sidebar-hover: rgba(255,255,255,0.07);
     --sidebar-active: rgba(255,255,255,0.12);
-    --main-bg: #FAF9F7;
+    --main-bg: #fff4e3;
     --text-primary: #1A1915;
     --text-muted: #6B6760;
     --text-hint: #9B9690;
@@ -22,20 +22,23 @@
     --user-bubble: #ECEAE6;
     --card-bg: #FFFFFF;
     --tag-bg: rgba(0,0,0,0.06);
-    --accent-orange: #D4730A;
+    --accent-orange: #c26400;
     --accent-pink: #C85B8A;
   }
 
-  html, body {
+  html {
     height: 100%;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    color: var(--text-primary);
-    font-size: 18px;
-    overflow: hidden;
+    font-size: 16px;
   }
 
   /* ── Desktop background ── */
   body {
+    height: 100%;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.5;
+    overflow: hidden;
     background:
       radial-gradient(ellipse at 15% 60%, rgba(190,110,40,0.32) 0%, transparent 50%),
       radial-gradient(ellipse at 85% 15%, rgba(90,70,170,0.28) 0%, transparent 48%),
@@ -81,7 +84,7 @@
     background: #222220;
     display: flex;
     align-items: center;
-    padding: 0 14px;
+    padding: 0 16px;
     gap: 8px;
     position: relative;
     user-select: none;
@@ -90,7 +93,7 @@
     cursor: default;
   }
 
-  .traffic-lights { display: flex; gap: 7px; align-items: center; }
+  .traffic-lights { display: flex; gap: 8px; align-items: center; }
 
   .tl {
     width: 12px; height: 12px;
@@ -150,53 +153,86 @@
   }
 
   .sidebar-header {
-    padding: 18px 16px 14px;
+    padding: 16px;
     border-bottom: 0.5px solid rgba(255,255,255,0.08);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
   }
 
   .workspace-name {
     display: flex;
-    align-items: center;
-    gap: 9px;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--sidebar-text);
+    align-items: flex-start;
+    gap: 8px;
     min-width: 0;
   }
 
+  .workspace-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .workspace-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--sidebar-text);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .workspace-subtitle {
+    font-size: 12px;
+    color: var(--sidebar-muted);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .logo-orb {
-    width: 22px;
-    height: 22px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: linear-gradient(135deg, #D4730A 0%, #C85B8A 100%);
     flex-shrink: 0;
   }
 
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
   .sidebar-section {
-    padding: 14px 0 4px;
+    padding: 16px 0 8px;
     flex: 1;
     overflow-y: auto;
   }
 
   .sidebar-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--sidebar-muted);
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    padding: 0 16px 6px;
+    padding: 0 16px 8px;
   }
 
   .nav-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 16px;
-    font-size: 16px;
+    padding: 8px 16px;
+    min-height: 40px;
+    font-size: 14px;
     color: var(--sidebar-muted);
     cursor: pointer;
     transition: background 0.12s, color 0.12s;
@@ -207,7 +243,7 @@
   .nav-item.active { background: var(--sidebar-active); color: var(--sidebar-text); }
 
   .nav-dot {
-    width: 5px; height: 5px;
+    width: 4px; height: 4px;
     border-radius: 50%;
     background: rgba(232,227,217,0.3);
     flex-shrink: 0;
@@ -215,7 +251,7 @@
   .nav-item.active .nav-dot { background: #D4730A; }
 
   .sidebar-apps {
-    padding: 10px 0 16px;
+    padding: 8px 0 16px;
     border-top: 0.5px solid rgba(255,255,255,0.07);
   }
 
@@ -223,7 +259,7 @@
     width: 24px;
     height: 24px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     background: transparent;
     color: var(--sidebar-muted);
     display: inline-flex;
@@ -249,16 +285,16 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 14px 0 10px;
+    padding: 16px 0 8px;
     transition: width 0.2s ease, min-width 0.2s ease, opacity 0.18s ease;
     overflow: hidden;
   }
 
   .rail-toggle {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border: none;
-    border-radius: 7px;
+    border-radius: 8px;
     background: transparent;
     color: var(--sidebar-muted);
     display: inline-flex;
@@ -266,7 +302,7 @@
     justify-content: center;
     cursor: pointer;
     transition: background 0.12s ease, color 0.12s ease;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .rail-toggle:hover {
     background: var(--sidebar-hover);
@@ -274,17 +310,20 @@
   }
 
   .rail-item {
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background: transparent;
     color: var(--sidebar-muted);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 13px;
+    padding: 8px;
+    min-height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.02em;
     transition: background 0.12s ease, color 0.12s ease;
@@ -328,22 +367,29 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 12px 24px;
+    padding: 16px 24px;
     border-bottom: 0.5px solid var(--border);
     background: var(--main-bg);
     flex-shrink: 0;
   }
 
+  .cv-tab {
+    padding: 8px 16px;
+    min-height: 40px;
+    font-size: 14px;
+  }
+
   .cv-back {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
+    gap: 8px;
+    font-size: 16px;
     color: var(--text-muted);
     background: none;
     border: none;
     cursor: pointer;
-    padding: 4px 0;
+    padding: 8px 0;
+    min-height: 40px;
     white-space: nowrap;
     font-family: 'DM Sans', sans-serif;
     transition: color 0.12s;
@@ -354,46 +400,18 @@
   }
 
   .cv-title {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--text-primary);
     flex: 1;
     min-width: 0;
   }
 
-  .cv-tabs {
-    display: flex;
-    gap: 2px;
-  }
-
-  .cv-tab {
-    padding: 5px 12px;
-    font-size: 12.5px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text-muted);
-    background: none;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.12s, color 0.12s;
-  }
-
-  .cv-tab:hover {
-    background: rgba(0, 0, 0, 0.05);
-    color: var(--text-primary);
-  }
-
-  .cv-tab.active {
-    background: rgba(0, 0, 0, 0.07);
-    color: var(--text-primary);
-    font-weight: 500;
-  }
-
   .cv-content {
     flex: 1;
     overflow-y: auto;
     min-height: 0;
-    padding: 28px 32px;
+    padding: 32px 32px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -402,27 +420,37 @@
   .cv-placeholder {
     background: #F0EDE8;
     border: 0.5px dashed rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 16px;
     color: var(--text-hint);
   }
 
   .cv-hero {
     width: 100%;
-    height: 260px;
+    aspect-ratio: 1320 / 520;
+    height: auto;
+    min-height: 192px;
+  }
+
+  .cv-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
   }
 
   .cv-thumbs {
     display: flex;
-    gap: 10px;
+    gap: 16px;
   }
 
   .cv-thumbs .cv-placeholder {
     flex: 1;
-    height: 90px;
+    height: 96px;
     min-width: 0;
   }
 
@@ -431,11 +459,11 @@
     border: 0.5px solid var(--border);
     border-left: 3px solid #D4730A;
     border-radius: 0 8px 8px 0;
-    padding: 12px 16px;
+    padding: 16px;
   }
 
   .cv-annotation-label {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-hint);
     text-transform: uppercase;
@@ -444,7 +472,7 @@
   }
 
   .cv-annotation-body {
-    font-size: 13px;
+    font-size: 16px;
     color: var(--text-primary);
     line-height: 1.6;
   }
@@ -452,11 +480,11 @@
   .cv-section {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .cv-section-label {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-hint);
     text-transform: uppercase;
@@ -464,14 +492,14 @@
   }
 
   .cv-section-text {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--text-primary);
     line-height: 1.65;
   }
 
   .cv-section-text ul {
     margin: 0;
-    padding-left: 18px;
+    padding-left: 16px;
   }
 
   .cv-section-text li {
@@ -481,21 +509,22 @@
   .cv-stat-row {
     display: flex;
     align-items: flex-start;
-    gap: 20px;
+    gap: 24px;
     padding-bottom: 16px;
     margin-bottom: 8px;
     border-bottom: 0.5px solid var(--border);
   }
 
-  .cv-stat-num {
-    font-size: 31px;
+  .cv-stat-num,
+  .cv-stat-number {
+    font-size: 36px;
     font-weight: 500;
     line-height: 1;
     color: var(--text-primary);
   }
 
   .cv-stat-label {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-hint);
     margin-top: 4px;
   }
@@ -513,51 +542,234 @@
     min-height: 280px;
   }
 
-  .cv-footer {
-    flex-shrink: 0;
-    padding: 14px 24px 18px;
-    border-top: 0.5px solid var(--border);
-    background: var(--main-bg);
-  }
-
-  .cv-footer-inner {
+  .cv-meta {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 24px;
+    padding: 8px 0;
   }
 
-  .cv-footer-label {
-    font-size: 11px;
+  .cv-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cv-meta-key {
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-hint);
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
 
-  .cv-footer-links {
+  .cv-meta-val {
+    font-size: 16px;
+    color: var(--text-primary);
+    line-height: 1.55;
+  }
+
+  .cv-section-body {
+    font-size: 16px;
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+
+  .cv-section-body ul {
+    margin: 0;
+    padding-left: 16px;
+  }
+
+  .cv-section-body li {
+    margin-bottom: 4px;
+  }
+
+  .cv-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .cv-highlight-card {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 8px;
   }
 
-  .cv-footer-btn {
-    font-size: 13px;
+  .cv-highlight-number {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .cv-highlight-label {
+    font-size: 12px;
+    color: var(--text-hint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .cv-reactions-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-hint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .cv-reactions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px 0 8px;
+    border-top: 0.5px solid var(--border);
+    margin-top: 8px;
+  }
+
+  .cv-reactions-pills {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cv-reaction-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 0.5px solid rgba(0, 0, 0, 0.12);
+    border-radius: 24px;
+    padding: 8px 16px;
+    min-height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, transform 0.1s;
     font-family: 'DM Sans', sans-serif;
-    padding: 8px 14px;
-    border-radius: 8px;
+  }
+
+  .cv-reaction-btn:hover {
+    background: #F5F3EF;
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .cv-reaction-btn.reacted {
+    background: #FDF6EE;
+    border-color: #D4730A;
+  }
+
+  .cv-reaction-btn.reacted .cv-reaction-count {
+    color: #D4730A;
+    font-weight: 500;
+  }
+
+  .cv-reaction-count {
+    font-size: 14px;
+    color: var(--text-muted);
+    min-width: 8px;
+  }
+
+  .cv-footer {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 24px;
+    border-top: 0.5px solid var(--border);
+    background: var(--main-bg);
+  }
+
+  .cv-footer-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .cv-nav-spacer {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cv-nav-btn {
+    font-family: 'DM Sans', sans-serif;
+    padding: 16px 24px;
+    min-height: 48px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    flex: 1;
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
     border: 0.5px solid var(--border);
     background: var(--card-bg);
     color: var(--text-primary);
     cursor: pointer;
+    text-align: left;
     transition: background 0.12s, border-color 0.12s;
+    box-sizing: border-box;
   }
 
-  .cv-footer-btn:hover {
+  .cv-nav-btn.cv-nav-next {
+    align-items: flex-end;
+  }
+
+  .cv-nav-btn:hover {
     background: #F3F0EB;
     border-color: rgba(0, 0, 0, 0.14);
   }
 
+  .cv-nav-label {
+    font-size: 12px;
+    color: var(--text-hint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .cv-nav-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
   @media (max-width: 767px) {
+    #suggestions-area {
+      left: 16px;
+      right: 16px;
+      padding: 0 0 16px;
+    }
+
+    .messages {
+      padding: 24px 16px;
+    }
+
+    .cv-content {
+      padding: 24px 16px;
+    }
+
+    .cv-topbar {
+      padding: 16px;
+    }
+
+    .cv-nav-btn {
+      padding: 16px;
+      min-height: 48px;
+      font-size: 16px;
+    }
+
+    .cv-footer {
+      padding: 16px;
+      gap: 8px;
+    }
+
     .suggestions-list {
       flex-direction: column;
       width: 100%;
@@ -566,11 +778,28 @@
     .suggestion-btn {
       width: 100%;
       justify-content: flex-start;
+      padding: 16px;
+      min-height: 48px;
+      font-size: 16px;
+    }
+
+    .cv-highlights {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .logo-orb {
+      width: 40px;
+      height: 40px;
+    }
+
+    .sender-orb {
+      width: 20px;
+      height: 20px;
     }
   }
 
   .topbar {
-    padding: 13px 24px;
+    padding: 16px 24px;
     border-bottom: 0.5px solid var(--border);
     font-size: 16px;
     font-weight: 500;
@@ -582,16 +811,13 @@
     flex-shrink: 0;
   }
 
-  .topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
+  .vp-topbar-title {
+    font-size: 16px;
   }
 
   .sidebar-toggle {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border: 0.5px solid rgba(0,0,0,0.14);
     border-radius: 8px;
     background: #fff;
@@ -618,19 +844,13 @@
     z-index: 4;
   }
 
-  .topbar-orb {
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #D4730A 0%, #C85B8A 100%);
-  }
-
   /* ── Messages ── */
   .messages {
     flex: 1;
     min-width: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 28px 24px;
+    padding: 32px 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -642,7 +862,7 @@
   .msg-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     min-width: 0;
     width: 100%;
     animation: fadeUp 0.28s ease both;
@@ -656,22 +876,23 @@
   .msg-sender {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
     font-size: 14px;
     font-weight: 500;
     color: var(--text-muted);
   }
 
   .sender-orb {
-    width: 18px; height: 18px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: linear-gradient(135deg, #D4730A 0%, #C85B8A 100%);
     flex-shrink: 0;
   }
 
   .msg-body {
-    font-size: 17px;
-    line-height: 1.72;
+    font-size: 16px;
+    line-height: 1.5;
     color: var(--text-primary);
     max-width: 100%;
   }
@@ -680,9 +901,9 @@
   .user-row { display: flex; justify-content: flex-end; }
   .user-bubble {
     background: var(--user-bubble);
-    border-radius: 18px 18px 4px 18px;
-    padding: 10px 16px;
-    font-size: 17px;
+    border-radius: 16px 16px 4px 16px;
+    padding: 16px;
+    font-size: 16px;
     line-height: 1.5;
     color: var(--text-primary);
     max-width: 72%;
@@ -690,11 +911,11 @@
 
   /* typing indicator */
   .typing {
-    display: flex; align-items: center; gap: 5px;
-    padding: 2px 0;
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 0;
   }
   .typing span {
-    width: 7px; height: 7px; border-radius: 50%;
+    width: 8px; height: 8px; border-radius: 50%;
     background: var(--text-hint);
     animation: blink 1.3s infinite ease-in-out;
   }
@@ -703,18 +924,25 @@
   @keyframes blink { 0%,80%,100%{opacity:0.25} 40%{opacity:1} }
 
   /* ── Tags & pills ── */
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 
-  .tag {
+  .option-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag,
+  .pill {
     display: inline-block;
-    font-size: 14px;
-    padding: 3px 10px;
-    border-radius: 20px;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 4px;
     background: var(--tag-bg);
     color: var(--text-muted);
   }
 
-  /* ── Main inner (chat + suggestions + composer) ── */
+  /* ── Main inner (chat + suggestions) ── */
   .main-inner {
     position: relative;
     flex: 1;
@@ -722,6 +950,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    scroll-behavior: smooth;
   }
 
   .main-inner[hidden] {
@@ -729,57 +958,65 @@
   }
 
   #suggestions-area {
-    display: none;
-    flex-direction: column;
-    gap: 6px;
-    padding: 0;
-    flex-shrink: 0;
-    width: 100%;
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    max-width: 100%;
+    transform: none;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    padding: 0 0 24px;
     box-sizing: border-box;
   }
 
   #suggestions-area.is-visible {
-    display: flex;
-    padding: 12px 16px 14px;
-    background: #1C1C1A;
-    border-radius: 16px 16px 0 0;
-    border: none;
-    border-top: 0.5px solid rgba(255, 255, 255, 0.08);
-    box-shadow: none;
-    animation: fadeUp 0.22s ease both;
+    pointer-events: auto;
+    visibility: visible;
+    animation: floatIn 0.25s ease forwards;
   }
 
   #suggestions-area.is-visible .suggestions-inner {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   #suggestions-area.is-visible .suggestions-header {
-    margin-bottom: 0;
+    margin-bottom: 8px;
   }
 
   #suggestions-area.is-hiding {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.15s ease;
+    visibility: visible;
+  }
+
+  @keyframes floatIn {
+    0%   { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
 
   .suggestions {
-    background: #1C1C1A;
+    width: auto;
+    background: #160b03;
     border-radius: 16px;
     border: 0.5px solid rgba(255, 255, 255, 0.1);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.25),
       0 2px 8px rgba(0, 0, 0, 0.15);
-    padding: 16px 18px 14px;
+    padding: 16px;
     box-sizing: border-box;
   }
 
   .suggestions-header {
-    font-size: 13px;
+    font-size: 16px;
     color: rgba(232, 227, 217, 0.6);
-    margin-bottom: 12px;
+    margin: 16px;
   }
 
   .suggestions-list {
@@ -789,6 +1026,7 @@
     gap: 8px;
     flex-wrap: nowrap;
     overflow-x: visible;
+    padding: 0 16px;
   }
 
   .suggestion-btn {
@@ -796,10 +1034,11 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
+    gap: 16px;
+    padding: 16px 24px;
+    min-height: 48px;
     border: 0.5px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 12px;
     background: transparent;
     color: #E8E3D9;
     font-size: 16px;
@@ -818,15 +1057,15 @@
   }
 
   .suggestion-num {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.1);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     color: rgba(232, 227, 217, 0.8);
   }
@@ -834,30 +1073,31 @@
   .suggestion-label {
     flex: 1;
     min-width: 0;
+    font-size: 16px;
   }
 
   /* ── Case study cards ── */
-  .case-cards { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; max-width: 100%; }
+  .case-cards { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; max-width: 100%; }
 
   .case-card {
     background: var(--card-bg);
     border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 13px 16px;
+    border-radius: 12px;
+    padding: 16px;
     cursor: pointer;
     transition: border-color 0.15s, transform 0.1s;
   }
   .case-card:hover { border-color: rgba(0,0,0,0.2); transform: translateY(-1px); }
   .case-card:active { transform: scale(0.99); }
   .case-card-title { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
-  .case-card-impact { font-size: 14px; color: #4A7C59; margin-bottom: 7px; }
+  .case-card-impact { font-size: 14px; color: #4A7C59; margin-bottom: 8px; }
 
   /* ── Detail block ── */
   .detail-block {
     background: var(--card-bg);
     border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 18px 20px;
+    border-radius: 12px;
+    padding: 24px;
     max-width: 100%;
     margin-top: 8px;
   }
@@ -865,39 +1105,39 @@
   .detail-stat {
     display: flex;
     align-items: flex-start;
-    gap: 20px;
+    gap: 24px;
     margin-bottom: 16px;
-    padding-bottom: 14px;
+    padding-bottom: 16px;
     border-bottom: 0.5px solid var(--border);
   }
 
-  .stat-number { font-size: 31px; font-weight: 500; line-height: 1; color: var(--text-primary); }
-  .stat-label { font-size: 13px; color: var(--text-hint); margin-top: 3px; }
-  .stat-desc { font-size: 16px; color: var(--text-muted); line-height: 1.55; padding-top: 2px; }
+  .stat-number { font-size: 28px; font-weight: 500; line-height: 1; color: var(--text-primary); }
+  .stat-label { font-size: 12px; color: var(--text-hint); margin-top: 4px; }
+  .stat-desc { font-size: 16px; color: var(--text-muted); line-height: 1.55; padding-top: 4px; }
 
-  .detail-row { margin-bottom: 13px; }
+  .detail-row { margin-bottom: 16px; }
   .detail-section-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-hint);
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
   .detail-text { font-size: 16px; color: var(--text-primary); line-height: 1.65; }
   .detail-text ul { padding-left: 16px; }
-  .detail-text li { margin-bottom: 3px; }
+  .detail-text li { margin-bottom: 4px; }
 
   .img-placeholder {
     background: #F0EDE8;
     border-radius: 8px;
-    height: 130px;
+    height: 128px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     color: var(--text-hint);
-    margin-top: 14px;
+    margin-top: 16px;
     border: 0.5px dashed rgba(0,0,0,0.12);
   }
 
@@ -905,60 +1145,26 @@
   .contact-block {
     background: var(--card-bg);
     border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-radius: 12px;
+    padding: 16px 24px;
     max-width: 504px;
     margin-top: 8px;
     display: flex;
     flex-direction: column;
-    gap: 11px;
+    gap: 16px;
   }
-  .contact-row { display: flex; align-items: center; gap: 10px; font-size: 16px; }
-  .contact-icon { font-size: 18px; width: 20px; text-align: center; }
-  .contact-label { font-weight: 500; color: var(--text-primary); min-width: 84px; }
+  .contact-row { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+  .contact-icon { font-size: 16px; width: 24px; text-align: center; }
+  .contact-label { font-weight: 500; color: var(--text-primary); min-width: 80px; }
   .contact-value { color: var(--text-muted); }
   .contact-link {
     text-decoration: none;
     border-radius: 8px;
-    padding: 2px 4px;
-    margin: -2px -4px;
+    padding: 4px;
+    margin: -4px;
     transition: background 0.12s ease;
   }
   .contact-link:hover { background: #F3F0EB; }
-
-  /* ── Composer ── */
-  .composer {
-    padding: 12px 20px 16px;
-    border-top: 0.5px solid var(--border);
-    background: var(--main-bg);
-    flex-shrink: 0;
-  }
-
-  .composer.composer-hidden {
-    display: none;
-  }
-
-  .composer-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--card-bg);
-    border: 0.5px solid rgba(0,0,0,0.13);
-    border-radius: 24px;
-    padding: 10px 10px 10px 18px;
-  }
-  .composer-placeholder { flex: 1; font-size: 16px; color: var(--text-hint); font-family: 'DM Sans', sans-serif; }
-  .composer-btn {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--text-primary);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: default;
-    flex-shrink: 0;
-  }
 
   /* ── Mobile ── */
   @media (max-width: 700px) {
@@ -1009,8 +1215,8 @@
     }
 
     .topbar {
-      padding: 10px 12px;
-      font-size: 14px;
+      padding: 16px;
+      font-size: 16px;
       position: sticky;
       top: 0;
       z-index: 3;
@@ -1023,24 +1229,15 @@
       display: none;
     }
 
-    .topbar-left {
-      gap: 8px;
-    }
-
     .sidebar-toggle {
       width: 32px;
       height: 32px;
-      border-radius: 9px;
-    }
-
-    .topbar-orb {
-      width: 16px;
-      height: 16px;
+      border-radius: 8px;
     }
 
     .messages {
-      padding: 16px 12px;
-      gap: 18px;
+      padding: 24px 16px;
+      gap: 24px;
     }
 
     .msg-body,
@@ -1052,11 +1249,11 @@
 
     .user-bubble {
       max-width: 88%;
-      padding: 10px 14px;
+      padding: 16px;
     }
 
     .detail-block {
-      padding: 14px;
+      padding: 16px;
     }
 
     .detail-stat {
@@ -1065,37 +1262,25 @@
     }
 
     .detail-text ul {
-      padding-left: 14px;
-    }
-
-    .composer {
-      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-    }
-
-    .composer-box {
-      padding: 9px 9px 9px 12px;
-      border-radius: 20px;
-    }
-
-    .composer-placeholder {
-      font-size: 15px;
-    }
-
-    .composer-btn {
-      width: 40px;
-      height: 40px;
+      padding-left: 16px;
     }
 
     .suggestions {
-      padding: 16px 14px 14px;
+      padding: 16px;
     }
 
     .suggestion-btn {
-      font-size: 15px;
-      padding: 10px 12px;
+      font-size: 16px;
+      padding: 16px;
+      min-height: 48px;
     }
   }
 </style>
+  <!-- 
+    Avatar: add your photo as assets/avatar.jpg
+    Recommended: square crop, minimum 200x200px, 
+    face centred. Circular mask applied via CSS.
+  -->
 </head>
 <body>
 
@@ -1118,8 +1303,14 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="workspace-name">
-        <div class="logo-orb"></div>
-        Quynh's Space
+        <div class="logo-orb" style="overflow: hidden; flex-shrink: 0;">
+          <img src="assets/avatar.jpg" alt="Quynh" class="avatar-img"
+               onerror="this.style.display='none'">
+        </div>
+        <div class="workspace-identity">
+          <div class="workspace-title">Quynh</div>
+          <div class="workspace-subtitle">Product experience designer</div>
+        </div>
       </div>
       <button class="sidebar-header-toggle desktop-only" type="button" aria-label="Collapse sidebar" onclick="toggleDesktopSidebar()">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
@@ -1175,31 +1366,17 @@
   <main class="main">
     <div class="main-inner" id="main-inner">
       <div class="topbar">
-        <div class="topbar-left">
-          <button class="sidebar-toggle mobile-only" type="button" aria-label="Open sidebar" onclick="toggleMobileSidebar()">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-              <path d="M1.5 3C1.5 2.172 2.172 1.5 3 1.5H5.5V13.5H3C2.172 13.5 1.5 12.828 1.5 12V3Z" fill="currentColor" fill-opacity="0.45"/>
-              <rect x="1.5" y="1.5" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.15"/>
-              <path d="M5.5 1.5V13.5" stroke="currentColor" stroke-width="1.15"/>
-            </svg>
-          </button>
-          <div class="topbar-orb"></div>
-          Quynh - Product Experience Designer
-        </div>
+        <button class="sidebar-toggle mobile-only" type="button" aria-label="Open sidebar" onclick="toggleMobileSidebar()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <path d="M1.5 3C1.5 2.172 2.172 1.5 3 1.5H5.5V13.5H3C2.172 13.5 1.5 12.828 1.5 12V3Z" fill="currentColor" fill-opacity="0.45"/>
+            <rect x="1.5" y="1.5" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.15"/>
+            <path d="M5.5 1.5V13.5" stroke="currentColor" stroke-width="1.15"/>
+          </svg>
+        </button>
       </div>
 
       <div class="messages" id="messages"></div>
       <div id="suggestions-area" class="suggestions" aria-live="polite"></div>
-      <div class="composer" id="composer">
-        <div class="composer-box">
-          <span class="composer-placeholder">Ask Quynh anything...</span>
-          <button class="composer-btn" aria-label="Send">
-            <svg width="16" height="16" viewBox="0 0 13 13" fill="none">
-              <path d="M6.5 1.5v10M6.5 1.5L2.5 5.5M6.5 1.5L10.5 5.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
     </div>
 
     <div class="case-view" id="case-view" hidden>
@@ -1208,10 +1385,6 @@
           ← Back to chat
         </button>
         <span class="cv-title" id="cv-title"></span>
-        <div class="cv-tabs">
-          <button type="button" class="cv-tab active" data-cv-tab="overview">Overview</button>
-          <button type="button" class="cv-tab" data-cv-tab="screens">Screens & Flow</button>
-        </div>
       </div>
 
       <div class="cv-content" id="cv-content"></div>
@@ -1225,7 +1398,6 @@
 <script>
 const messages = document.getElementById('messages');
 const suggestionsEl = document.getElementById('suggestions-area');
-const composerEl = document.getElementById('composer');
 const mainInner = document.getElementById('main-inner');
 const caseViewEl = document.getElementById('case-view');
 const cvContentEl = document.getElementById('cv-content');
@@ -1233,6 +1405,7 @@ const cvFooterEl = document.getElementById('cv-footer');
 const cvTitleEl = document.getElementById('cv-title');
 let suggestionsHideTimer = null;
 let currentCaseId = null;
+const reactionCounts = {};
 
 function clearSuggestionsImmediate() {
   if (suggestionsHideTimer) {
@@ -1241,92 +1414,137 @@ function clearSuggestionsImmediate() {
   }
   suggestionsEl.classList.remove('is-visible', 'is-hiding');
   suggestionsEl.innerHTML = '';
-  composerEl.classList.remove('composer-hidden');
 }
 
 function buildCvOverviewHtml(c) {
   return `
-    <div class="cv-stat-row">
-      <div>
-        <div class="cv-stat-num">${c.stat}</div>
-        <div class="cv-stat-label">${c.statLabel}</div>
+    <div class="cv-placeholder cv-hero">[ Hero screen — ${c.title} ]</div>
+
+    <div class="cv-highlights">
+      <div class="cv-highlight-card">
+        <div class="cv-highlight-number">${c.stat}</div>
+        <div class="cv-highlight-label">${c.statLabel}</div>
       </div>
-      <div class="cv-stat-desc">${c.action}</div>
+      <div class="cv-highlight-card">
+        <div class="cv-highlight-number">${c.timeline}</div>
+        <div class="cv-highlight-label">Timeline</div>
+      </div>
+      <div class="cv-highlight-card">
+        <div class="cv-highlight-number">${c.platform}</div>
+        <div class="cv-highlight-label">Platform</div>
+      </div>
     </div>
+
+    <div class="cv-meta">
+      <div class="cv-meta-item">
+        <span class="cv-meta-key">Team</span>
+        <span class="cv-meta-val">${c.team}</span>
+      </div>
+      <div class="cv-meta-item">
+        <span class="cv-meta-key">Type</span>
+        <span class="cv-meta-val">${c.type}</span>
+      </div>
+      <div class="cv-meta-item">
+        <span class="cv-meta-key">Problem</span>
+        <span class="cv-meta-val">${c.problem}</span>
+      </div>
+    </div>
+
+    <div class="cv-thumbs">
+      <div class="cv-placeholder">[ Screen 2 ]</div>
+      <div class="cv-placeholder">[ Screen 3 ]</div>
+      <div class="cv-placeholder">[ Screen 4 ]</div>
+    </div>
+
     <div class="cv-section">
-      <div class="cv-section-label">Problem</div>
-      <div class="cv-section-text">${c.problem}</div>
+      <div class="cv-section-label">Design trade-offs</div>
+      <div class="cv-section-body">
+        <ul>
+          ${c.decisions.map(d => `<li>${d}</li>`).join('')}
+        </ul>
+      </div>
     </div>
-    <div class="cv-section">
-      <div class="cv-section-label">Team & Timeline</div>
-      <div class="cv-section-text">${c.team} · ${c.timeline}</div>
+
+    <div class="cv-section-label" style="font-size:11px; font-weight:500;
+      color:var(--text-hint); text-transform:uppercase;
+      letter-spacing:0.07em;">
+      Flow &amp; IA
     </div>
-    <div class="cv-section">
-      <div class="cv-section-label">Key Insights</div>
-      <div class="cv-section-text"><ul>${c.insights.map(i => `<li>${i}</li>`).join('')}</ul></div>
+    <div class="cv-placeholder cv-flow-large">
+      [ User flow / IA diagram — ${c.title} ]
     </div>
-    <div class="cv-section">
-      <div class="cv-section-label">Decisions</div>
-      <div class="cv-section-text"><ul>${c.decisions.map(d => `<li>${d}</li>`).join('')}</ul></div>
-    </div>
+
     <div class="cv-section">
       <div class="cv-section-label">Reflection</div>
-      <div class="cv-section-text">${c.reflection}</div>
+      <div class="cv-section-body">${c.reflection}</div>
+    </div>
+
+    <div class="cv-reactions">
+      <div class="cv-reactions-pills">
+        <button class="cv-reaction-btn" data-reaction="fire"
+                onclick="handleReaction(this, 'fire')">
+          🔥 <span class="cv-reaction-count">${reactionCounts[currentCaseId + '-fire'] || 0}</span>
+        </button>
+        <button class="cv-reaction-btn" data-reaction="heart"
+                onclick="handleReaction(this, 'heart')">
+          ❤️ <span class="cv-reaction-count">${reactionCounts[currentCaseId + '-heart'] || 0}</span>
+        </button>
+        <button class="cv-reaction-btn" data-reaction="bulb"
+                onclick="handleReaction(this, 'bulb')">
+          💡 <span class="cv-reaction-count">${reactionCounts[currentCaseId + '-bulb'] || 0}</span>
+        </button>
+      </div>
     </div>`;
 }
 
-function renderCaseViewTab(tab) {
+function handleReaction(btn, type) {
+  const caseKey = currentCaseId + '-' + type;
+  const countEl = btn.querySelector('.cv-reaction-count');
+
+  if (btn.classList.contains('reacted')) {
+    btn.classList.remove('reacted');
+    reactionCounts[caseKey] = Math.max(0,
+      (reactionCounts[caseKey] || 0) - 1);
+  } else {
+    btn.classList.add('reacted');
+    reactionCounts[caseKey] = (reactionCounts[caseKey] || 0) + 1;
+  }
+  countEl.textContent = reactionCounts[caseKey];
+}
+
+function renderCaseViewTab() {
   if (!currentCaseId) return;
   const c = caseData[currentCaseId];
   if (!c) return;
-  if (tab === 'overview') {
-    cvContentEl.innerHTML = buildCvOverviewHtml(c);
-  } else if (tab === 'screens') {
-    cvContentEl.innerHTML = `
-      <div class="cv-section-label"
-           style="font-size:11px; font-weight:500;
-                  color:var(--text-hint); text-transform:uppercase;
-                  letter-spacing:0.07em;">
-        Screens
-      </div>
-      <div class="cv-placeholder cv-hero">[ Drop hero screen here ]</div>
-      <div class="cv-thumbs">
-        <div class="cv-placeholder"></div>
-        <div class="cv-placeholder"></div>
-        <div class="cv-placeholder"></div>
-      </div>
-      <div class="cv-section-label"
-           style="font-size:11px; font-weight:500;
-                  color:var(--text-hint); text-transform:uppercase;
-                  letter-spacing:0.07em; margin-top: 16px;">
-        Flow
-      </div>
-      <div class="cv-placeholder cv-flow-large">
-        [ User flow diagram ]
-      </div>`;
-  }
-}
-
-function setCvTab(tab) {
-  document.querySelectorAll('.cv-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.cvTab === tab);
-  });
-  renderCaseViewTab(tab);
+  cvContentEl.innerHTML = buildCvOverviewHtml(c);
   cvContentEl.scrollTop = 0;
 }
 
 function populateCaseFooter(activeId) {
-  const others = Object.entries(caseData)
-    .filter(([id]) => id !== activeId)
-    .map(([id, c2]) => ({ id, title: c2.title }));
-  const btns = others.map(
-    ({ id, title }) =>
-      `<button type="button" class="cv-footer-btn" data-case-id="${id}">${title}</button>`
-  ).join('');
+  const ids = Object.keys(caseData);
+  const idx = ids.indexOf(activeId);
+  const prevId = idx > 0 ? ids[idx - 1] : null;
+  const nextId = idx >= 0 && idx < ids.length - 1 ? ids[idx + 1] : null;
+  const esc = (s) => String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  const prevSlot = prevId
+    ? `<button type="button" class="cv-nav-btn cv-nav-prev" data-case-id="${prevId}">
+        <span class="cv-nav-label">Previous</span>
+        <span class="cv-nav-title">${esc(caseData[prevId].title)}</span>
+      </button>`
+    : '<div class="cv-nav-spacer" aria-hidden="true"></div>';
+  const nextSlot = nextId
+    ? `<button type="button" class="cv-nav-btn cv-nav-next" data-case-id="${nextId}">
+        <span class="cv-nav-label">Next</span>
+        <span class="cv-nav-title">${esc(caseData[nextId].title)}</span>
+      </button>`
+    : '<div class="cv-nav-spacer" aria-hidden="true"></div>';
   cvFooterEl.innerHTML = `
     <div class="cv-footer-inner">
-      <span class="cv-footer-label">More work</span>
-      <div class="cv-footer-links">${btns}</div>
+      ${prevSlot}
+      ${nextSlot}
     </div>`;
   cvFooterEl.querySelectorAll('[data-case-id]').forEach(btn => {
     btn.addEventListener('click', () => openCaseView(btn.getAttribute('data-case-id')));
@@ -1340,24 +1558,45 @@ function openCaseView(id) {
   currentCaseId = id;
   cvTitleEl.textContent = c.title;
   populateCaseFooter(id);
-  setCvTab('overview');
+  renderCaseViewTab();
   caseViewEl.hidden = false;
   mainInner.hidden = true;
-  cvContentEl.scrollTop = 0;
 }
 
-function closeCaseView() {
+function closeCaseView(showSuggestionsAfter) {
   currentCaseId = null;
   caseViewEl.hidden = true;
   mainInner.hidden = false;
   cvFooterEl.innerHTML = '';
+  if (!showSuggestionsAfter) return;
+  const messagesEl = document.getElementById('messages');
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  setTimeout(() => {
+    const allIds = Object.keys(caseData);
+    const unviewed = allIds.filter(id => !viewedCases.has(id));
+
+    if (unviewed.length > 0) {
+      const nextOptions = unviewed.slice(0, 2).map(id => ({
+        key: 'case-' + id,
+        label: caseData[id].title
+      }));
+      addOptions(
+        [...nextOptions, { key: 'contact', label: 'Get in touch' }],
+        "What's next?"
+      );
+    } else {
+      addOptions(
+        [
+          { key: 'contact', label: 'Get in touch' },
+          { key: 'principles', label: 'My principles' }
+        ],
+        "What's next?"
+      );
+    }
+  }, 200);
 }
 
-document.getElementById('cv-back').addEventListener('click', () => closeCaseView());
-
-document.querySelectorAll('.cv-tab').forEach(btn => {
-  btn.addEventListener('click', () => setCvTab(btn.dataset.cvTab));
-});
+document.getElementById('cv-back').addEventListener('click', () => closeCaseView(true));
 
 const caseData = {
   'sports-tracker': {
@@ -1495,7 +1734,10 @@ function addClaudeMsg(html) {
   const g = document.createElement('div');
   g.className = 'msg-group';
   g.innerHTML = `
-    <div class="msg-sender"><div class="sender-orb"></div> Quynh</div>
+    <div class="msg-sender"><div class="sender-orb" style="overflow: hidden; flex-shrink: 0;">
+      <img src="assets/avatar.jpg" alt="Quynh" class="avatar-img"
+           onerror="this.style.display='none'">
+    </div> Quynh</div>
     <div class="msg-body">${html}</div>`;
   messages.appendChild(g);
   scroll();
@@ -1510,7 +1752,6 @@ function addOptions(pills, headerText) {
   ).join('');
   suggestionsEl.innerHTML = `<div class="suggestions-inner">${headerHtml}<div class="suggestions-list">${buttonsHtml}</div></div>`;
   suggestionsEl.classList.add('is-visible');
-  composerEl.classList.add('composer-hidden');
   scroll();
 }
 
@@ -1529,7 +1770,6 @@ function removeOptions() {
   suggestionsHideTimer = setTimeout(() => {
     suggestionsEl.innerHTML = '';
     suggestionsEl.classList.remove('is-visible', 'is-hiding');
-    composerEl.classList.remove('composer-hidden');
     suggestionsHideTimer = null;
   }, 200);
 }
@@ -1579,24 +1819,6 @@ function handleOption(key) {
       </ul>`);
 
       openCaseView(id);
-
-      const allIds = Object.keys(caseData);
-      const unviewed = allIds.filter(cid => !viewedCases.has(cid));
-      if (unviewed.length > 0) {
-        const nextOptions = unviewed.slice(0, 2).map(cid => ({
-          key: 'case-' + cid,
-          label: caseData[cid].title
-        }));
-        addOptions([...nextOptions, { key: 'contact', label: 'Get in touch' }], "What's next?");
-      } else {
-        addOptions(
-          [
-            { key: 'contact', label: 'Get in touch' },
-            { key: 'principles', label: 'My principles' }
-          ],
-          "What's next?"
-        );
-      }
     }, 1100);
 
   } else if (key === 'playground') {
@@ -1622,10 +1844,6 @@ function handleOption(key) {
           </div>
           <div class="img-placeholder">[ playground concepts / prototypes go here ]</div>
         </div>`);
-      addOptions([
-        { key: 'case-studies', label: '← See case studies' },
-        { key: 'contact', label: 'Get in touch →' }
-      ]);
     }, 800);
 
   } else if (key === 'contact') {
@@ -1653,7 +1871,6 @@ function handleOption(key) {
             <span class="contact-value">Download PDF</span>
           </a>
         </div>`);
-      addOptions([{ key: 'case-studies', label: '← Back to work' }], 'Ready to connect?');
     }, 700);
 
   } else if (key === 'principles') {
@@ -1664,13 +1881,6 @@ function handleOption(key) {
         <li><strong>Context drives decisions</strong> — metrics matter, but understanding behaviour matters more.</li>
         <li><strong>Systems enable scale</strong> — strong foundations create speed and consistency.</li>
       </ul>`);
-    addOptions(
-      [
-        { key: 'case-studies', label: 'See case studies' },
-        { key: 'contact', label: 'Get in touch' }
-      ],
-      "What's next?"
-    );
   }
 }
 
@@ -1681,10 +1891,11 @@ async function init() {
   setTimeout(() => {
     removeTyping();
     addClaudeMsg(`Hey, I'm <strong>Quynh</strong> - a Product Experience Designer focused on making complex products feel simple, familiar, and worth coming back to.<br><br>
-      <span class="tag">7+ years experience</span>
       <span class="tag">End-to-end product</span>
+      <span class="tag">7+ years experience</span>
       <span class="tag">Systems thinker</span>
-      <span class="tag">High-fidelity execution</span>`);
+      <span class="tag">High-fidelity execution</span>
+      <span class="tag">AI adopter</span>`);
     setTimeout(() => {
       addOptions(
         [
@@ -1692,7 +1903,7 @@ async function init() {
           { key: 'playground', label: 'Explore playground' },
           { key: 'contact', label: 'Get in touch' }
         ],
-        "Hey, I'm here for:"
+        "Hey Quynh, I'm here to:"
       );
     }, 200);
   }, 900);
