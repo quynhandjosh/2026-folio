@@ -77,6 +77,16 @@
       0 8px 28px rgba(0,0,0,0.5);
   }
 
+  /* Desktop: uniform scale so frame dimensions + internal spacing grow together */
+  @media (min-width: 701px) {
+    .window-wrapper {
+      --frame-zoom: 1.125;
+      width: min(1272px, calc(96vw / var(--frame-zoom)));
+      height: min(864px, calc(93vh / var(--frame-zoom)));
+      zoom: var(--frame-zoom);
+    }
+  }
+
   /* ── macOS titlebar ── */
   .titlebar {
     height: 40px;
@@ -163,7 +173,7 @@
 
   .workspace-name {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
     min-width: 0;
   }
@@ -180,9 +190,6 @@
     font-weight: 500;
     color: var(--sidebar-text);
     line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .workspace-subtitle {
@@ -192,11 +199,12 @@
   }
 
   .logo-orb {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: linear-gradient(135deg, #D4730A 0%, #C85B8A 100%);
     flex-shrink: 0;
+    overflow: hidden;
   }
 
   .avatar-img {
@@ -206,6 +214,11 @@
     object-fit: cover;
     object-position: center;
     display: block;
+  }
+
+  .logo-orb .avatar-img {
+    transform: scale(1.25);
+    transform-origin: center center;
   }
 
   .sidebar-section {
@@ -427,9 +440,9 @@
 
   .cv-hero {
     width: 100%;
-    aspect-ratio: 1320 / 520;
+    aspect-ratio: 1320 / 598;
     height: auto;
-    min-height: 192px;
+    min-height: calc(192px * 1.15);
   }
 
   .cv-hero img {
@@ -441,14 +454,31 @@
   }
 
   .cv-thumbs {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: minmax(var(--cv-thumbs-min-height, 96px), auto);
     gap: 16px;
+    align-items: stretch;
   }
 
   .cv-thumbs .cv-placeholder {
-    flex: 1;
-    height: 96px;
     min-width: 0;
+    min-height: 100%;
+    height: 100%;
+  }
+
+  .cv-thumbs .cv-placeholder:has(> img) {
+    padding: 0;
+    display: block;
+  }
+
+  .cv-thumbs .cv-placeholder > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+    display: block;
   }
 
   .cv-annotation {
@@ -537,6 +567,14 @@
   .cv-flow-large {
     width: 100%;
     min-height: 280px;
+  }
+
+  .cv-flow-large > img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    display: block;
   }
 
   .cv-meta {
@@ -637,7 +675,32 @@
 
   .cv-reactions-pills {
     display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
     gap: 8px;
+    width: 100%;
+  }
+
+  .cv-back-to-chat-btn {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    min-height: 40px;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  }
+
+  .cv-back-to-chat-btn:hover {
+    background: #F3F0EB;
+    border-color: rgba(0, 0, 0, 0.14);
+    color: var(--text-primary);
   }
 
   .cv-reaction-btn {
@@ -784,7 +847,7 @@
       justify-content: flex-start;
       padding: 16px;
       min-height: 48px;
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .cv-highlights {
@@ -792,8 +855,8 @@
     }
 
     .logo-orb {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
     }
 
     .sender-orb {
@@ -1018,8 +1081,8 @@
   }
 
   .suggestions-header {
-    font-size: 16px;
-    color: rgba(232, 227, 217, 0.6);
+    font-size: 14px;
+    color: rgba(255, 230, 181, 0.6);
     margin: 16px;
   }
 
@@ -1045,7 +1108,7 @@
     border-radius: 12px;
     background: transparent;
     color: #E8E3D9;
-    font-size: 16px;
+    font-size: 14px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
     text-align: left;
@@ -1077,7 +1140,7 @@
   .suggestion-label {
     flex: 1;
     min-width: 0;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   /* ── Case study cards ── */
@@ -1190,6 +1253,7 @@
       height: 100dvh;
       border-radius: 0;
       box-shadow: none;
+      zoom: 1;
     }
 
     .titlebar {
@@ -1274,7 +1338,7 @@
     }
 
     .suggestion-btn {
-      font-size: 16px;
+      font-size: 14px;
       padding: 16px;
       min-height: 48px;
     }
@@ -1307,13 +1371,12 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="workspace-name">
-        <div class="logo-orb" style="overflow: hidden; flex-shrink: 0;">
+        <div class="logo-orb">
           <img src="assets/avatar.jpg" alt="Quynh" class="avatar-img"
                onerror="this.style.display='none'">
         </div>
         <div class="workspace-identity">
-          <div class="workspace-title">Quynh</div>
-          <div class="workspace-subtitle">Product experience designer</div>
+          <div class="workspace-title">Quynh's workspace</div>
         </div>
       </div>
       <button class="sidebar-header-toggle desktop-only" type="button" aria-label="Collapse sidebar" onclick="toggleDesktopSidebar()">
@@ -1381,8 +1444,8 @@
 
     <div class="case-view" id="case-view" hidden>
       <div class="cv-topbar">
-        <button class="cv-back" id="cv-back" type="button">
-          ← Back to chat
+        <button class="cv-back" id="cv-back" type="button" aria-label="Back to chat">
+          ←
         </button>
         <span class="cv-title" id="cv-title"></span>
       </div>
@@ -1401,6 +1464,30 @@ const suggestionsEl = document.getElementById('suggestions-area');
 const mainInner = document.getElementById('main-inner');
 const caseViewEl = document.getElementById('case-view');
 const cvContentEl = document.getElementById('cv-content');
+let cvHighlightsResizeObserver = null;
+
+function syncCvThumbsHeight() {
+  const highlights = cvContentEl.querySelector('.cv-highlights');
+  const thumbs = cvContentEl.querySelector('.cv-thumbs');
+  if (!highlights || !thumbs) return;
+  const h = highlights.offsetHeight;
+  if (h < 1) return;
+  thumbs.style.setProperty('--cv-thumbs-min-height', h + 'px');
+}
+
+function bindCvThumbsHeightSync() {
+  if (cvHighlightsResizeObserver) {
+    cvHighlightsResizeObserver.disconnect();
+    cvHighlightsResizeObserver = null;
+  }
+  const highlights = cvContentEl.querySelector('.cv-highlights');
+  if (!highlights) return;
+  requestAnimationFrame(() => {
+    syncCvThumbsHeight();
+    cvHighlightsResizeObserver = new ResizeObserver(syncCvThumbsHeight);
+    cvHighlightsResizeObserver.observe(highlights);
+  });
+}
 const cvFooterEl = document.getElementById('cv-footer');
 const cvTitleEl = document.getElementById('cv-title');
 let suggestionsHideTimer = null;
@@ -1428,8 +1515,65 @@ function buildCvOverviewHtml(c) {
         <div class="cv-pillar-text">${p.value}</div>
       </div>`).join('');
 
-  return `
-    <div class="cv-section">
+  const heroInner = c.heroImage
+    ? `<img src="${c.heroImage}" alt="">`
+    : `[ Hero screen — ${c.title} ]`;
+
+  const thumbsInner = c.thumbImages
+    ? c.thumbImages.map(src => `<div class="cv-placeholder"><img src="${src}" alt=""></div>`).join('')
+    : `<div class="cv-placeholder">[ Screen 2 ]</div>
+      <div class="cv-placeholder">[ Screen 3 ]</div>
+      <div class="cv-placeholder">[ Screen 4 ]</div>`;
+
+  const flowInner = c.flowImage
+    ? `<img src="${c.flowImage}" alt="">`
+    : `[ User flow / IA diagram — ${c.title} ]`;
+
+  const revisedFlowInner = c.revisedFlowImage
+    ? `<img src="${c.revisedFlowImage}" alt="">`
+    : `[ User flow / IA diagram — ${c.title} ]`;
+
+  const isFeedProfile = c.title === 'Feed Profile Creation';
+  const isSportsHomepage = currentCaseId === 'sports-homepage';
+  const decisionsSectionLabel = c.decisionsSectionLabel || 'Design trade-offs';
+
+  const proposedFlowSection = `    <div class="cv-section">
+      <div class="cv-section-label">Proposed flow - Rejected</div>
+      <div class="cv-section-body">
+        <div class="cv-placeholder cv-flow-large">
+          ${flowInner}
+        </div>
+      </div>
+    </div>`;
+
+  const revisedFlowSection = `    <div class="cv-section">
+      <div class="cv-section-label">Revised Flow</div>
+      <div class="cv-section-body">
+        <div class="cv-placeholder cv-flow-large">
+          ${revisedFlowInner}
+        </div>
+      </div>
+    </div>`;
+
+  const flowBlockSimple = `    <div class="cv-placeholder cv-flow-large">
+      ${flowInner}
+    </div>`;
+
+  const contextualBetslipSection = `    <div class="cv-section">
+      <div class="cv-section-label">Contextual betslip</div>
+      <div class="cv-section-body">
+        <div class="cv-placeholder cv-flow-large">
+          <img src="assets/flow-sports-homepage-2.png" alt="">
+        </div>
+      </div>
+    </div>`;
+
+  const thumbsBlock = `
+    <div class="cv-thumbs">
+      ${thumbsInner}
+    </div>`;
+
+  const tldrSection = `    <div class="cv-section">
       <div class="cv-section-label">TL;DR</div>
       <div class="cv-section-body">
         <ul>
@@ -1438,22 +1582,39 @@ function buildCvOverviewHtml(c) {
           <li>Outcome: ${c.outcome}</li>
         </ul>
       </div>
-    </div>
+    </div>`;
 
-    <div class="cv-placeholder cv-hero">[ Hero screen — ${c.title} ]</div>
+  const heroBlock = `    <div class="cv-placeholder cv-hero">${heroInner}</div>`;
+
+  return `
+${isFeedProfile ? `${heroBlock}
+
+${tldrSection}` : `${tldrSection}
+
+${heroBlock}`}
 
     <div class="cv-highlights">
       ${pillarsHtml}
     </div>
-
-    <div class="cv-thumbs">
-      <div class="cv-placeholder">[ Screen 2 ]</div>
-      <div class="cv-placeholder">[ Screen 3 ]</div>
-      <div class="cv-placeholder">[ Screen 4 ]</div>
-    </div>
-
+${isFeedProfile ? thumbsBlock : ''}
     <div class="cv-section">
-      <div class="cv-section-label">Design trade-offs</div>
+      <div class="cv-section-label">Insights</div>
+      <div class="cv-section-body">
+        <ul>
+          ${c.insights.map(i => {
+            if (i && typeof i === 'object' && Array.isArray(i.points)) {
+              const nested = `<ul>${i.points.map(p => `<li>${p}</li>`).join('')}</ul>`;
+              return `<li>${i.text}${nested}</li>`;
+            }
+            return `<li>${i}</li>`;
+          }).join('')}
+        </ul>
+      </div>
+    </div>
+${!isFeedProfile ? thumbsBlock : ''}
+${isFeedProfile ? proposedFlowSection : ''}
+    <div class="cv-section">
+      <div class="cv-section-label">${decisionsSectionLabel}</div>
       <div class="cv-section-body">
         <ul>
           ${c.decisions.map(d => `<li>${d}</li>`).join('')}
@@ -1461,14 +1622,8 @@ function buildCvOverviewHtml(c) {
       </div>
     </div>
 
-    <div class="cv-section-label" style="font-size:11px; font-weight:500;
-      color:var(--text-hint); text-transform:uppercase;
-      letter-spacing:0.07em;">
-      Flow &amp; IA
-    </div>
-    <div class="cv-placeholder cv-flow-large">
-      [ User flow / IA diagram — ${c.title} ]
-    </div>
+    ${isFeedProfile ? revisedFlowSection : flowBlockSimple}
+${isSportsHomepage ? contextualBetslipSection : ''}
 
     <div class="cv-section">
       <div class="cv-section-label">Reflection</div>
@@ -1489,6 +1644,8 @@ function buildCvOverviewHtml(c) {
                 onclick="handleReaction(this, 'bulb')">
           💡 <span class="cv-reaction-count">${reactionCounts[currentCaseId + '-bulb'] || 0}</span>
         </button>
+        <button type="button" class="cv-back-to-chat-btn"
+                onclick="closeCaseView(true)">Back to chat</button>
       </div>
     </div>`;
 }
@@ -1514,6 +1671,7 @@ function renderCaseViewTab() {
   if (!c) return;
   cvContentEl.innerHTML = buildCvOverviewHtml(c);
   cvContentEl.scrollTop = 0;
+  bindCvThumbsHeightSync();
 }
 
 function populateCaseFooter(activeId) {
@@ -1560,6 +1718,10 @@ function openCaseView(id) {
 }
 
 function closeCaseView(showSuggestionsAfter) {
+  if (cvHighlightsResizeObserver) {
+    cvHighlightsResizeObserver.disconnect();
+    cvHighlightsResizeObserver = null;
+  }
   currentCaseId = null;
   caseViewEl.hidden = true;
   mainInner.hidden = false;
@@ -1582,10 +1744,7 @@ function closeCaseView(showSuggestionsAfter) {
       );
     } else {
       addOptions(
-        [
-          { key: 'contact', label: 'Get in touch' },
-          { key: 'principles', label: 'My principles' }
-        ],
+        [{ key: 'contact', label: 'Get in touch' }],
         "What's next?"
       );
     }
@@ -1597,68 +1756,86 @@ document.getElementById('cv-back').addEventListener('click', () => closeCaseView
 const caseData = {
   'sports-tracker': {
     title: 'Bet Tracker',
-    impact: '90% AFL engagement; 70% rate tracking important or very important',
-    type: 'Corporate', platform: 'Native',
-    stat: '90%', statLabel: 'AFL punters engaged',
-    action: 'Designed a first-to-market bet tracker that surfaces core stats directly within the My Bets view.',
+    heroImage: 'assets/hero-bet-tracker.png',
+    thumbImages: ['assets/bt-screen-1.png', 'assets/bt-screen-2.png', 'assets/bt-screen-3.png'],
+    flowImage: 'assets/flow-bet-tracker.png',
+    impact: '94% AFL punters engagement; 70% rate tracking important or very important',
+    type: 'First-to-market feature', platform: 'Native',
+    stat: '94%', statLabel: 'AFL punters engaged',
+    action: 'Designed a first-to-market bet tracker that surfaces core stats directly on platform.',
     problem: '69% of users were switching between Sportsbet and the AFL app to track the game outcome.',
-    outcome: '90% engagement rate for AFL punters and 70% of users now rate tracking as important or very important.',
+    outcome: '94% engagement rate for AFL punters and 70% of users now rate tracking as important or very important.',
     role: 'Sole designer owning the project from exploration to production.',
     constraints: 'High pressure to be first to market; limited by initial data provider templates.',
     team: 'Sports Betting Product', timeline: '4 weeks',
-    insights: ['V1 templates worked, but users did not trust the data','Confusion about when stats were actually live','Frustration when injuries were not reflected in the app'],
-    decisions: ['Built trust in Phase 2 with jersey numbers for recognition','Added bench and injury status so users could judge cash-out timing','Focused on clarifying live vs delayed state, not only new features'],
-    reflection: '90% engagement among AFL punters. The tracker evolved from a nice-to-have into a core driver of app retention.'
+    insights: ['V1 templates worked, but users did not trust the data','Difficulty identifying which player belong to which team','Confusion about when stats were actually live','Frustration when injuries were not reflected in the app'],
+    decisions: ['Built trust in Phase 2 with clear messaging on live service', 'Added jersey numbers for recognition', 'Added bench and injury status so users could judge cash-out timing', 'Simplify leg outcome for better readability'],
+    reflection: '94% engagement among AFL punters. The tracker evolved from a nice-to-have into a core driver of app retention.'
   },
-  'feed-profile': {
-    title: 'Feed Profile Creation',
-    impact: '100% usability test completion; limited initial user validation',
-    type: 'Growth / Onboarding', platform: 'Native',
-    stat: '100%', statLabel: 'usability test completion',
-    action: 'Fast profile creation with suggested username and avatar after auto-profile (Reddit-style) was rejected.',
-    problem: 'Only 3 in 10 users who landed on Feed created a profile.',
-    outcome: '100% usability test completion; the project lacked initial user validation.',
-    role: 'Exploratory designer.',
-    constraints: 'Limited tech feasibility in the space and lack of initial user research of the product.',
-    team: 'Customer to Customer', timeline: '2 weeks',
-    insights: ['Stakeholders blocked full automation—product had to disagree and commit','Worked without initial user research to hit OKRs','Pre-selected avatars reduced friction while satisfying constraints'],
-    decisions: ['Pivot from full auto-profile to fast flow with suggested identity','Elevated UI with pre-selected avatars to cut hesitation','Shipped on deadline despite limited feasibility and research upfront'],
-    reflection: 'A lesson in disagree and commit: find middle ground that moves metrics and keeps partners on board, even when the ideal UX is out of scope.'
-  },
-  'wayfinding': {
-    title: 'Wayfinding in Landscape',
+  'landscape': {
+    title: 'Landscape 4WD navigation',
+    decisionsSectionLabel: 'Design decisions',
+    heroImage: 'assets/hero-landscape.png',
+    thumbImages: ['assets/ls-screen-1.png', 'assets/ls-screen-2.png', 'assets/ls-screen-3.png'],
+    flowImage: 'assets/flow-landscape.png',
     impact: 'Distinct, safe in-car experience without a long research phase',
-    type: 'Start-up / UX', platform: 'Native',
+    type: 'Portrait to Landscape mode', platform: 'Native',
     stat: '90%', statLabel: 'used app in landscape while driving',
-    action: 'Rapid audit and redesign of the landscape experience, prioritizing glanceable info and reachability.',
-    problem: '90% of Newtracs users used the app in landscape while driving, but the UI was strictly portrait-optimized.',
-    outcome: 'A distinct, safe in-car experience without the luxury of a long research phase.',
-    role: 'Designer leading internal audit, intuition, and tight dev-loop testing.',
+    action: 'New design introduction of the landscape experience, prioritising legibility and high-traffic areas optimisation.',
+    problem: '90% of Newtracs users used the app in landscape while driving, but the UI was initially launched as a portrait-optimised.',
+    outcome: 'A comprehensive in-drive experience that is simple and familiar to the portrait behaviour.',
     constraints: 'Zero external research; 4-week timeline; fast-paced start-up environment at Newtracs.',
     contextPillars: [
       { label: 'Environment', value: 'Fast-paced start-up' },
-      { label: 'Timeline', value: '4 weeks' },
-      { label: 'Process', value: 'Zero external research. Straight up driven by internal team audit, intuition, and tight dev-loop testing.' }
+      { label: 'Timeline', value: '2 weeks' },
+      { label: 'Process', value: 'Zero external research. Driven by internal team audit, intuition, and tight dev-loop testing.' }
     ],
-    team: 'Newtracs', timeline: '4 weeks',
-    insights: ['Zero external research—driven by internal audit and intuition','Tight dev-loop testing instead of a long discovery phase','High speed-to-ship in a fast-paced start-up environment'],
-    decisions: ['Anchored real-time info (speed, location) bottom-left for spatial memory','Grouped Search and Route Builder on the right edge for docked-phone reach','Replaced bottom nav with a right-side drawer to save horizontal space'],
-    reflection: 'Delivered a clear in-car mode when research time was a luxury—proof that audit, intuition, and iteration can still raise the bar.'
+    team: 'Newtracs', timeline: '2 weeks',
+    insights: [
+      {
+        text: 'Audit product features to identify differences in user mental models between:',
+        points: ['Portrait mode: Planning trip, browsing trails, exploring community activities', 'Landscape mode: In-drive navigation information first ie. Speed, location, hazards, trail condition, map layer.']
+      },
+    ],
+    decisions: ['Anchored real-time info bottom-left for spatial memory','Explore card takeover design for multiple layered card content.'],
+    reflection: 'Delivered a clear in-drive mode when there was not any resources for research. Even though simple and iterative design can be launched for early adopters feedback, if I can start again, I would lean into AI to build a robust prototype for guerilla testing to validate the design.'
   },
-  'world-cup': {
+  'sports-homepage': {
     title: 'Sports Homepage Experience',
+    heroImage: 'assets/hero-sports-homepage.png',
+    thumbImages: ['assets/sh-screen-1.png', 'assets/sh-screen-2.png', 'assets/sh-screen-3.png'],
+    flowImage: 'assets/flow-sports-homepage.png',
     impact: 'New way of navigating and building bets across the app',
-    type: 'Exploratory design', platform: 'Prototype',
+    type: 'Exploratory ', platform: 'Information architecture redesign',
     stat: '2 days', statLabel: 'Figma + Cursor sprint',
-    action: 'Reduced noise on the global IA nav and surfaced personalised homepage content with filtering.',
-    problem: 'The global IA nav introduced confusion and repetition across the app.',
-    outcome: 'Introduces a new way of navigating and building bets across the app.',
-    role: 'Exploratory designer; quick team ideation in Figma and Cursor for a full working prototype.',
+    action: 'Reduced noise on the global IA nav and surfaced personalised homepage content with filtering options.',
+    problem: 'The current global IA nav introduced confusion and repetition across the app.',
+    outcome: 'Introduces a new way of navigating and building bets across the app that is personalised and contextually relevant.',
+    role: 'Exploratory designer in a team of 4.',
     constraints: '2-day sprint; exploratory scope only; no extended research or production handoff.',
     team: 'Sports Product', timeline: '2 days',
-    insights: ['Quick team ideation brought directly into Figma','Cursor AI used to produce a full working prototype','Exploratory slice, not a production commitment'],
-    decisions: ['Homepage as Your Home—surface big events and content from history, not generic tiles','Crown search for users who already know what they want','Contextual betslip—build a bet anywhere, not only in Bet Slip'],
-    reflection: 'A short sprint can still propose a new navigation and bet-building model worth testing with real traffic.'
+    insights: ['Quick team ideation brought directly into Figma design','Cursor AI used to produce a full working prototype'],
+    decisions: ['Homepage as Your Home: surface big events and content from users historic activities, not generic tiles','Highlight search functionality for users who already know what they want','Contextual betslip: allows users to build a bet anywhere, not only in Bet Slip'],
+    reflection: 'Exploratory design allows us to freely explore solutions without technical and product constraints. User needs and business priorities are the driving force. Our team leaning into AI to produce a fully working prototype in a short period of time in such a short timeframe.'
+  },
+  'feed-profile': {
+    title: 'Feed Profile Creation',
+    heroImage: 'assets/hero-feed-profile.png',
+    thumbImages: ['assets/fp-screen-1.png', 'assets/fp-screen-2.png', 'assets/fp-screen-3.png'],
+    flowImage: 'assets/flow-feed-profile.png',
+    revisedFlowImage: 'assets/revisedflow-feed-profile.png',
+    impact: '98% usability test completion; limited initial user validation',
+    type: 'Onboarding', platform: 'Native',
+    stat: '100%', statLabel: 'usability test completion',
+    action: 'Initial design recommendation for auto-profile creation was rejected. Pivot to bottom sheet signup for better user awareness and stakeholder agreement',
+    problem: 'Only 3 in 10 users who landed on Feed created a profile.',
+    outcome: '98% usability test completion with high comprehension of the feature.',
+    role: 'Exploratory designer.',
+    constraints: 'Limited tech feasibility in the space and lack of initial user research of the product.',
+    team: 'Customer to Customer', timeline: '1 week',
+    insights: ['Stakeholder Friction: This project is a lesson in "disagree and commit". My initial recommendation for a fully automated profile creation was blocked by the product team due to risk and product direction.','Design was engaged without initial user research.','This feature is strictly moving fast to hit OKRs.'],
+    decisions: ['Pivot from full auto-profile to fast flow with suggested identity','Elevated UI with pre-selected avatars to cut hesitation'],
+    reflection: 'A lesson in disagree and commit: find middle ground that moves metrics and keeps partners on board, even when the ideal UX is out of scope. Even though it is not the most intuitive solution, the bottom sheet does help keep the user informed of their choices and hit the product goal of easier signup process.'
   }
 };
 
@@ -1860,14 +2037,6 @@ function handleOption(key) {
         </div>`);
     }, 700);
 
-  } else if (key === 'principles') {
-    closeCaseView();
-    addClaudeMsg(`Three things shape how I work:<br><br>
-      <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
-        <li><strong>Clarity over cleverness</strong> — if users have to think, the design isn't done.</li>
-        <li><strong>Context drives decisions</strong> — metrics matter, but understanding behaviour matters more.</li>
-        <li><strong>Systems enable scale</strong> — strong foundations create speed and consistency.</li>
-      </ul>`);
   }
 }
 

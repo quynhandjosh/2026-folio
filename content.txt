@@ -29,7 +29,7 @@ Problem: 90% of Newtracs users were using the app in landscape while driving, bu
 
 Action: Rapid audit and redesign of the landscape experience, prioritizing "glanceable" info and reachability.
 
-Outcome: Created a distinct, safe "in-car" experience without the luxury of a long research phase.
+Outcome: Created a comprehensive "in-car" experience without the luxury of a long research phase.
 
 Section 2 — Context
 
@@ -97,3 +97,19 @@ The Workaround: I had to find a middle ground—uplifting the current UI with pr
 
 
 - This was done without initial user research—strictly moving fast to hit OKRs.
+
+
+------
+
+Sports Tracker
+↑ 90% of AFL bettors used the tracker
+Feature Web & Native
+Feed Profile Creation
+↑ 100% task completion in usability testing
+Growth / Onboarding Native
+Wayfinding in Landscape
+↑ Improved in-drive usability and spatial clarity
+UX / System redesign Native / CarPlay
+World Cup Knockout
+↑ New interaction model for event-based engagement
+Feature Native
