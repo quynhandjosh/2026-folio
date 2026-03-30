@@ -188,10 +188,7 @@
   .workspace-subtitle {
     font-size: 12px;
     color: var(--sidebar-muted);
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.35;
   }
 
   .logo-orb {
@@ -612,6 +609,13 @@
     color: var(--text-hint);
     text-transform: uppercase;
     letter-spacing: 0.06em;
+  }
+
+  .cv-pillar-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1.45;
   }
 
   .cv-reactions-label {
@@ -1329,9 +1333,6 @@
       <div class="nav-item" id="nav-case-studies" onclick="navClick('case-studies')">
         <div class="nav-dot"></div> Case Studies
       </div>
-      <div class="nav-item" id="nav-playground" onclick="navClick('playground')">
-        <div class="nav-dot"></div> Playground
-      </div>
       <div class="nav-item" id="nav-contact" onclick="navClick('contact')">
         <div class="nav-dot"></div> Get in Touch
       </div>
@@ -1358,7 +1359,6 @@
     </button>
     <button class="rail-item active" id="rail-intro" type="button" title="Intro" onclick="navClick('intro')">I</button>
     <button class="rail-item" id="rail-case-studies" type="button" title="Case Studies" onclick="navClick('case-studies')">CS</button>
-    <button class="rail-item" id="rail-playground" type="button" title="Playground" onclick="navClick('playground')">P</button>
     <button class="rail-item" id="rail-contact" type="button" title="Get in Touch" onclick="navClick('contact')">G</button>
   </div>
 
@@ -1417,37 +1417,33 @@ function clearSuggestionsImmediate() {
 }
 
 function buildCvOverviewHtml(c) {
-  return `
-    <div class="cv-placeholder cv-hero">[ Hero screen — ${c.title} ]</div>
+  const contextPillars = c.contextPillars || [
+    { label: 'Team', value: c.team },
+    { label: 'Role', value: c.role },
+    { label: 'Constraints', value: c.constraints }
+  ];
+  const pillarsHtml = contextPillars.map(p => `
+      <div class="cv-highlight-card">
+        <div class="cv-highlight-label">${p.label}</div>
+        <div class="cv-pillar-text">${p.value}</div>
+      </div>`).join('');
 
-    <div class="cv-highlights">
-      <div class="cv-highlight-card">
-        <div class="cv-highlight-number">${c.stat}</div>
-        <div class="cv-highlight-label">${c.statLabel}</div>
-      </div>
-      <div class="cv-highlight-card">
-        <div class="cv-highlight-number">${c.timeline}</div>
-        <div class="cv-highlight-label">Timeline</div>
-      </div>
-      <div class="cv-highlight-card">
-        <div class="cv-highlight-number">${c.platform}</div>
-        <div class="cv-highlight-label">Platform</div>
+  return `
+    <div class="cv-section">
+      <div class="cv-section-label">TL;DR</div>
+      <div class="cv-section-body">
+        <ul>
+          <li>Problem: ${c.problem}</li>
+          <li>Action: ${c.action}</li>
+          <li>Outcome: ${c.outcome}</li>
+        </ul>
       </div>
     </div>
 
-    <div class="cv-meta">
-      <div class="cv-meta-item">
-        <span class="cv-meta-key">Team</span>
-        <span class="cv-meta-val">${c.team}</span>
-      </div>
-      <div class="cv-meta-item">
-        <span class="cv-meta-key">Type</span>
-        <span class="cv-meta-val">${c.type}</span>
-      </div>
-      <div class="cv-meta-item">
-        <span class="cv-meta-key">Problem</span>
-        <span class="cv-meta-val">${c.problem}</span>
-      </div>
+    <div class="cv-placeholder cv-hero">[ Hero screen — ${c.title} ]</div>
+
+    <div class="cv-highlights">
+      ${pillarsHtml}
     </div>
 
     <div class="cv-thumbs">
@@ -1600,52 +1596,69 @@ document.getElementById('cv-back').addEventListener('click', () => closeCaseView
 
 const caseData = {
   'sports-tracker': {
-    title: 'Sports Tracker',
-    impact: '90% of AFL bettors used the tracker',
-    type: 'Feature', platform: 'Web & Native',
-    stat: '90%', statLabel: 'AFL bettors engaged',
-    action: 'Introduced an in-app bet tracker with live game context.',
-    problem: '69% of users were using external apps to track their bets.',
+    title: 'Bet Tracker',
+    impact: '90% AFL engagement; 70% rate tracking important or very important',
+    type: 'Corporate', platform: 'Native',
+    stat: '90%', statLabel: 'AFL punters engaged',
+    action: 'Designed a first-to-market bet tracker that surfaces core stats directly within the My Bets view.',
+    problem: '69% of users were switching between Sportsbet and the AFL app to track the game outcome.',
+    outcome: '90% engagement rate for AFL punters and 70% of users now rate tracking as important or very important.',
+    role: 'Sole designer owning the project from exploration to production.',
+    constraints: 'High pressure to be first to market; limited by initial data provider templates.',
     team: 'Sports Betting Product', timeline: '4 weeks',
-    insights: ['Users needed real-time clarity, not just final outcomes','Trust in data accuracy was low','Lack of context created confusion around results'],
-    decisions: ['Added contextual signals (substitutions, player status)','Simplified win/loss clarity','Introduced visible refresh state to communicate data latency'],
-    reflection: 'Real-time expectations will continue to increase. Passive tracking (e.g. lock screen) is a strong opportunity for the next iteration.'
+    insights: ['V1 templates worked, but users did not trust the data','Confusion about when stats were actually live','Frustration when injuries were not reflected in the app'],
+    decisions: ['Built trust in Phase 2 with jersey numbers for recognition','Added bench and injury status so users could judge cash-out timing','Focused on clarifying live vs delayed state, not only new features'],
+    reflection: '90% engagement among AFL punters. The tracker evolved from a nice-to-have into a core driver of app retention.'
   },
   'feed-profile': {
     title: 'Feed Profile Creation',
-    impact: '100% task completion in usability testing',
+    impact: '100% usability test completion; limited initial user validation',
     type: 'Growth / Onboarding', platform: 'Native',
-    stat: '100%', statLabel: 'task completion in testing',
-    action: 'Fast-tracked profile creation flow for non-logged-in users.',
-    problem: 'Only 3 out of 10 users interacting with the Feed created an account.',
+    stat: '100%', statLabel: 'usability test completion',
+    action: 'Fast profile creation with suggested username and avatar after auto-profile (Reddit-style) was rejected.',
+    problem: 'Only 3 in 10 users who landed on Feed created a profile.',
+    outcome: '100% usability test completion; the project lacked initial user validation.',
+    role: 'Exploratory designer.',
+    constraints: 'Limited tech feasibility in the space and lack of initial user research of the product.',
     team: 'Customer to Customer', timeline: '2 weeks',
-    insights: ['Registration and Feed systems were handled separately','Users were hesitant to commit to a full sign-up flow','High drop-off before any account creation occurred'],
-    decisions: ['Bottom sheet with auto-generated name and avatar','Option to edit or regenerate identity','Added reassurance messaging to reduce hesitation','Reduced total steps in profile creation flow'],
-    reflection: 'Earlier integration into the registration flow could further improve conversion. Opportunity to personalise identity earlier in the journey.'
+    insights: ['Stakeholders blocked full automation—product had to disagree and commit','Worked without initial user research to hit OKRs','Pre-selected avatars reduced friction while satisfying constraints'],
+    decisions: ['Pivot from full auto-profile to fast flow with suggested identity','Elevated UI with pre-selected avatars to cut hesitation','Shipped on deadline despite limited feasibility and research upfront'],
+    reflection: 'A lesson in disagree and commit: find middle ground that moves metrics and keeps partners on board, even when the ideal UX is out of scope.'
   },
   'wayfinding': {
     title: 'Wayfinding in Landscape',
-    impact: 'Improved in-drive usability and spatial clarity',
-    type: 'UX / System redesign', platform: 'Native / CarPlay',
-    stat: '↑', statLabel: 'spatial clarity & reachability',
-    action: 'Redesigned navigation and layout for landscape and in-car use.',
-    problem: 'No dedicated landscape experience despite majority usage occurring while driving.',
+    impact: 'Distinct, safe in-car experience without a long research phase',
+    type: 'Start-up / UX', platform: 'Native',
+    stat: '90%', statLabel: 'used app in landscape while driving',
+    action: 'Rapid audit and redesign of the landscape experience, prioritizing glanceable info and reachability.',
+    problem: '90% of Newtracs users used the app in landscape while driving, but the UI was strictly portrait-optimized.',
+    outcome: 'A distinct, safe in-car experience without the luxury of a long research phase.',
+    role: 'Designer leading internal audit, intuition, and tight dev-loop testing.',
+    constraints: 'Zero external research; 4-week timeline; fast-paced start-up environment at Newtracs.',
+    contextPillars: [
+      { label: 'Environment', value: 'Fast-paced start-up' },
+      { label: 'Timeline', value: '4 weeks' },
+      { label: 'Process', value: 'Zero external research. Straight up driven by internal team audit, intuition, and tight dev-loop testing.' }
+    ],
     team: 'Newtracs', timeline: '4 weeks',
-    insights: ['Speed, location, altitude needed persistent, anchored visibility','Primary actions needed right-edge placement for thumb reach','Bottom nav fails completely in landscape orientation'],
-    decisions: ['Persistent real-time info anchored in consistent position','Primary actions moved to right edge for accessibility','Replaced bottom nav with a right-side drawer','Record function elevated as a floating action'],
-    reflection: 'Further validation needed on navigation clarity across different user types. Continued iteration on information density based on behaviour.'
+    insights: ['Zero external research—driven by internal audit and intuition','Tight dev-loop testing instead of a long discovery phase','High speed-to-ship in a fast-paced start-up environment'],
+    decisions: ['Anchored real-time info (speed, location) bottom-left for spatial memory','Grouped Search and Route Builder on the right edge for docked-phone reach','Replaced bottom nav with a right-side drawer to save horizontal space'],
+    reflection: 'Delivered a clear in-car mode when research time was a luxury—proof that audit, intuition, and iteration can still raise the bar.'
   },
   'world-cup': {
-    title: 'World Cup Knockout',
-    impact: 'New interaction model for event-based engagement',
-    type: 'Feature', platform: 'Native',
-    stat: 'New', statLabel: 'interaction model shipped',
-    action: 'Designed an event-driven engagement surface for knockout stages.',
-    problem: 'No dedicated experience to capture the energy of knockout tournament moments.',
-    team: 'Sports Product', timeline: '3 weeks',
-    insights: ['Knockout moments drive peak user intent','Standard bet flow doesn\'t match tournament energy','Users want contextual, moment-specific experiences'],
-    decisions: ['Bracket-style visual layout to mirror the tournament format','Progressive reveal as matches resolved','Contextual content tied to live match events'],
-    reflection: 'The template can extend to other tournament formats across the platform in future seasons.'
+    title: 'Sports Homepage Experience',
+    impact: 'New way of navigating and building bets across the app',
+    type: 'Exploratory design', platform: 'Prototype',
+    stat: '2 days', statLabel: 'Figma + Cursor sprint',
+    action: 'Reduced noise on the global IA nav and surfaced personalised homepage content with filtering.',
+    problem: 'The global IA nav introduced confusion and repetition across the app.',
+    outcome: 'Introduces a new way of navigating and building bets across the app.',
+    role: 'Exploratory designer; quick team ideation in Figma and Cursor for a full working prototype.',
+    constraints: '2-day sprint; exploratory scope only; no extended research or production handoff.',
+    team: 'Sports Product', timeline: '2 days',
+    insights: ['Quick team ideation brought directly into Figma','Cursor AI used to produce a full working prototype','Exploratory slice, not a production commitment'],
+    decisions: ['Homepage as Your Home—surface big events and content from history, not generic tiles','Crown search for users who already know what they want','Contextual betslip—build a bet anywhere, not only in Bet Slip'],
+    reflection: 'A short sprint can still propose a new navigation and bet-building model worth testing with real traffic.'
   }
 };
 
@@ -1669,7 +1682,6 @@ function navClick(key) {
   closeSidebarOnMobile();
   if (key === 'intro') { resetChat(); return; }
   if (key === 'case-studies') { handleOption('case-studies'); return; }
-  if (key === 'playground') { handleOption('playground'); return; }
   if (key === 'contact') { handleOption('contact'); return; }
 }
 
@@ -1821,31 +1833,6 @@ function handleOption(key) {
       openCaseView(id);
     }, 1100);
 
-  } else if (key === 'playground') {
-    closeCaseView();
-    setActiveNav('playground');
-    addUserMsg('Show me your Playground');
-    addTyping();
-    setTimeout(() => {
-      removeTyping();
-      addClaudeMsg(`Here are a few concept spaces where I test interaction ideas before they become production work.
-        <div class="detail-block">
-          <div class="detail-row">
-            <div class="detail-section-label">Interaction Experiments</div>
-            <div class="detail-text"><ul>
-              <li>Motion studies for micro-feedback and perceived speed</li>
-              <li>Alternative information hierarchies for high-density screens</li>
-              <li>Prompt-based prototyping for rapid concept validation</li>
-            </ul></div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-section-label">What I Validate</div>
-            <div class="detail-text">Comprehension speed, action confidence, and handoff readiness with engineering.</div>
-          </div>
-          <div class="img-placeholder">[ playground concepts / prototypes go here ]</div>
-        </div>`);
-    }, 800);
-
   } else if (key === 'contact') {
     closeCaseView();
     setActiveNav('contact');
@@ -1890,17 +1877,17 @@ async function init() {
   addTyping();
   setTimeout(() => {
     removeTyping();
-    addClaudeMsg(`Hey, I'm <strong>Quynh</strong> - a Product Experience Designer focused on making complex products feel simple, familiar, and worth coming back to.<br><br>
+    addClaudeMsg(`Hey, I'm <strong>Quynh</strong> - a Product Experience Designer focused on making complex products feel simple, familiar, and worth coming back to.<br>
+    Design is my love language. I speak it fluently whether it is to the business goals or to the user needs.<br><br>
       <span class="tag">End-to-end product</span>
-      <span class="tag">7+ years experience</span>
+      <span class="tag">AI early adopter</span>
       <span class="tag">Systems thinker</span>
       <span class="tag">High-fidelity execution</span>
-      <span class="tag">AI adopter</span>`);
+      <span class="tag">7+ year experience</span>`);
     setTimeout(() => {
       addOptions(
         [
-          { key: 'case-studies', label: 'See case studies' },
-          { key: 'playground', label: 'Explore playground' },
+          { key: 'case-studies', label: 'See your work' },
           { key: 'contact', label: 'Get in touch' }
         ],
         "Hey Quynh, I'm here to:"

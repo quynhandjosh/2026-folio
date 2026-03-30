@@ -1,0 +1,99 @@
+Bet Tracker (Corporate / The "Market First")
+
+Section 1 — TL;DR
+Problem: 69% of users were switching between Sportsbet and AFL app to track the game outcome.
+Action: Designed a first-to-market bet tracker that surfaces core stats directly within the "My Bets" view.
+
+Outcome: 90% engagement rate for AFL punters and 70% of users now rate tracking as "important" or "very important".
+
+Section 2 — Context
+Team: Sports Betting Product.
+Role: Sole Designer owning the project from exploration to production.
+Constraints: High pressure to be first to market; limited by initial data provider templates.
+
+Section 3 — The Messy Progression
+The "V1" Intuition: We launched with two basic templates. It worked, but post-launch research was a wake-up call.
+The Friction: Users loved the idea but didn't trust the data. They were confused about when it was actually "live" and were frustrated when a player got injured without the app reflecting it.
+The Improved: Phase 2 wasn't about "new features"; it was about building trust. We added jersey numbers for recognition and "bench/injury" status so users could make informed cash-out decisions.
+
+Section 4 — Outcome
+90% engagement among AFL punters.Evolved from a "nice-to-have" feature to a core reason for app retention.
+
+----------------
+
+Wayfinding in Landscape (Start-up / The "Intuition" Phase)
+
+Section 1 — TL;DR
+
+Problem: 90% of Newtracs users were using the app in landscape while driving, but the UI was strictly portrait-optimized.
+
+Action: Rapid audit and redesign of the landscape experience, prioritizing "glanceable" info and reachability.
+
+Outcome: Created a distinct, safe "in-car" experience without the luxury of a long research phase.
+
+Section 2 — Context
+
+Environment: Fast-paced start-up (Newtracs).
+Timeline: 4 weeks.
+Process: Zero external research. Straight up driven by internal team audit, intuition, and tight dev-loop testing.
+
+Section 3 — Design Decisions
+
+Spatial Memory: Anchored real-time info (speed, location) in the bottom left to match portrait habits.
+
+Reachability: Grouped primary actions (Search, Route Builder) on the right edge for easy thumb-reach while the phone is docked.
+
+IA Pivot: Replaced the bottom nav with a right-side drawer to save horizontal screen real estate.
+
+--------------
+
+Sports Homepage Experience
+
+Section 1 — TL;DR
+
+Problem: Current global IA nav introduces confusion and repetition across the app.
+
+Action: Reduce options on global IA nav and surface personalisation content on homepage with filtering options
+
+Outcome: Introduce new way of navigating and building bet across the app.
+
+Section 2 — Context
+
+Project type: Exploratory design.
+Timeline: 2 days.
+Process: Quick team ideation that brings to life in Figma and using Cursor AI to produce a full working prototype.
+
+Section 3 — Design Decisions
+
+Homepage to be Your Home - No more generic content, surface relevant big event and content based on your history.
+
+Crown the search - Tap into users with "I know what I'm looking for mindset".
+
+Contextual Betslip - Allow bet building anywhere on the platform, not just within "Bet Slip" space.
+
+-------------
+
+Feed Profile Creation
+
+Section 1 — TL;DR
+
+Problem: 3/10 users landed on Feed creating a profile
+
+Action: Proposed an auto-profile creation (Reddit-style), which was rejected; pivoted to a fast profile creation flow with suggested username and avatar.
+
+Outcome: 100% usability test completion, though the project lacked initial user validation.
+
+Section 2 — Context
+Team: Customer to Customer team.
+Role: Exploratory designer.
+Constraints: Limited tech feasibility in the space and lack of initial user research of the product.
+
+Section 3 — The Messy Reality
+
+Stakeholder Friction: This project is a lesson in "disagree and commit." My initial recommendation for full automation was blocked by the product team.
+
+
+The Workaround: I had to find a middle ground—uplifting the current UI with pre-selected avatars to reduce friction while keeping stakeholders happy.
+
+
+- This was done without initial user research—strictly moving fast to hit OKRs.
