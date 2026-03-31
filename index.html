@@ -1011,6 +1011,40 @@
     color: #D4730A;
   }
 
+  /* system-style “You viewed …” separator (chat timeline) */
+  .msg-viewed-divider-group {
+    align-items: center;
+  }
+
+  .msg-viewed-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    padding: 2px 0;
+    user-select: none;
+  }
+
+  .msg-viewed-divider-line {
+    flex: 1;
+    min-width: 8px;
+    height: 1px;
+    background: rgba(107, 103, 96, 0.22);
+  }
+
+  .msg-viewed-divider-text {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+    opacity: 0.88;
+    line-height: 1.3;
+    max-width: 70%;
+    text-align: center;
+  }
+
   /* user bubble */
   .user-row { display: flex; justify-content: flex-end; }
   .user-bubble {
@@ -1730,6 +1764,10 @@ function populateCaseFooter(activeId) {
 function openCaseView(id) {
   const c = caseData[id];
   if (!c) return;
+  if (currentCaseId != null && currentCaseId !== id) {
+    const prev = caseData[currentCaseId];
+    if (prev) appendViewedCaseDivider(prev.title);
+  }
   viewedCases.add(id);
   currentCaseId = id;
   cvTitleEl.textContent = c.title;
@@ -1800,6 +1838,9 @@ function closeCaseView(showSuggestionsAfter) {
   if (!followupHtml) {
     scroll();
     return;
+  }
+  if (closedCaseId && caseData[closedCaseId]) {
+    appendViewedCaseDivider(caseData[closedCaseId].title);
   }
   addTyping();
   setTimeout(() => {
@@ -1952,6 +1993,21 @@ function resetChat() {
 }
 
 // ── DOM helpers ──
+
+function appendViewedCaseDivider(caseTitle) {
+  const esc = escapeChatFollowupText(caseTitle);
+  const g = document.createElement('div');
+  g.className = 'msg-group msg-viewed-divider-group';
+  g.innerHTML = `
+    <div class="msg-viewed-divider" role="separator">
+      <span class="msg-viewed-divider-line" aria-hidden="true"></span>
+      <span class="msg-viewed-divider-text">You viewed ${esc}</span>
+      <span class="msg-viewed-divider-line" aria-hidden="true"></span>
+    </div>`;
+  g.querySelector('.msg-viewed-divider').setAttribute('aria-label', 'You viewed ' + caseTitle);
+  messages.appendChild(g);
+  scroll();
+}
 
 function addUserMsg(text) {
   const g = document.createElement('div');
