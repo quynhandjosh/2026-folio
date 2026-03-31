@@ -1817,7 +1817,7 @@ const caseCloseFollowupById = {
     emojis: ['💯', '❤️', '💡']
   },
   'landscape': {
-    text: 'I was sweating with this project. You can overthink so many things without user validation. At the end of the day, I find simplicity work well and I\'ve grown so much as a designer working in this piece.',
+    text: 'I was sweating with this project. You can overthink so many things without user validation. At the end of the day, I find simplicity works well and I\'ve grown so much as a designer working in this piece.',
     emojis: ['👍', '❤️', '💡']
   },
   'feed-profile': {
@@ -1849,10 +1849,16 @@ function handleChatFollowupReaction(btn) {
   const ri = btn.getAttribute('data-ri');
   if (blockId == null || ri == null) return;
   const key = blockId + '-' + ri;
-  reactionCounts[key] = (reactionCounts[key] || 0) + 1;
-  btn.classList.add('msg-reaction-active');
   const countEl = btn.querySelector('.msg-reaction-count');
-  if (countEl) countEl.textContent = reactionCounts[key];
+  if (btn.classList.contains('msg-reaction-active')) {
+    reactionCounts[key] = Math.max(0, (reactionCounts[key] || 0) - 1);
+    btn.classList.remove('msg-reaction-active');
+    if (countEl) countEl.textContent = reactionCounts[key];
+  } else {
+    reactionCounts[key] = (reactionCounts[key] || 0) + 1;
+    btn.classList.add('msg-reaction-active');
+    if (countEl) countEl.textContent = reactionCounts[key];
+  }
 }
 
 function closeCaseView(showSuggestionsAfter) {
