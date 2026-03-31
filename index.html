@@ -1551,6 +1551,39 @@ let suggestionsHideTimer = null;
 let currentCaseId = null;
 const reactionCounts = {};
 
+function cvReactionCountKey(caseId, emojiSlug) {
+  return `reactions-${caseId}-${emojiSlug}`;
+}
+function cvReactedKey(caseId, emojiSlug) {
+  return `reacted-${caseId}-${emojiSlug}`;
+}
+function getCvReactionCount(caseId, emojiSlug) {
+  try {
+    const raw = localStorage.getItem(cvReactionCountKey(caseId, emojiSlug));
+    const n = parseInt(raw, 10);
+    return Number.isFinite(n) && n >= 0 ? n : 0;
+  } catch (e) {
+    return 0;
+  }
+}
+function setCvReactionCount(caseId, emojiSlug, count) {
+  try {
+    localStorage.setItem(cvReactionCountKey(caseId, emojiSlug), String(count));
+  } catch (e) { /* quota / private mode */ }
+}
+function hasCvUserReacted(caseId, emojiSlug) {
+  try {
+    return localStorage.getItem(cvReactedKey(caseId, emojiSlug)) === '1';
+  } catch (e) {
+    return false;
+  }
+}
+function setCvUserReacted(caseId, emojiSlug) {
+  try {
+    localStorage.setItem(cvReactedKey(caseId, emojiSlug), '1');
+  } catch (e) { /* quota / private mode */ }
+}
+
 function clearSuggestionsImmediate() {
   if (suggestionsHideTimer) {
     clearTimeout(suggestionsHideTimer);
@@ -1689,17 +1722,17 @@ ${isSportsHomepage ? contextualBetslipSection : ''}
 
     <div class="cv-reactions">
       <div class="cv-reactions-pills">
-        <button class="cv-reaction-btn" data-reaction="fire"
+        <button class="cv-reaction-btn${hasCvUserReacted(currentCaseId, 'fire') ? ' reacted' : ''}" data-reaction="fire"
                 onclick="handleReaction(this, 'fire')">
-          🔥 <span class="cv-reaction-count">${reactionCounts[currentCaseId + '-fire'] || 0}</span>
+          🔥 <span class="cv-reaction-count">${getCvReactionCount(currentCaseId, 'fire')}</span>
         </button>
-        <button class="cv-reaction-btn" data-reaction="heart"
+        <button class="cv-reaction-btn${hasCvUserReacted(currentCaseId, 'heart') ? ' reacted' : ''}" data-reaction="heart"
                 onclick="handleReaction(this, 'heart')">
-          ❤️ <span class="cv-reaction-count">${reactionCounts[currentCaseId + '-heart'] || 0}</span>
+          ❤️ <span class="cv-reaction-count">${getCvReactionCount(currentCaseId, 'heart')}</span>
         </button>
-        <button class="cv-reaction-btn" data-reaction="bulb"
+        <button class="cv-reaction-btn${hasCvUserReacted(currentCaseId, 'bulb') ? ' reacted' : ''}" data-reaction="bulb"
                 onclick="handleReaction(this, 'bulb')">
-          💡 <span class="cv-reaction-count">${reactionCounts[currentCaseId + '-bulb'] || 0}</span>
+          💡 <span class="cv-reaction-count">${getCvReactionCount(currentCaseId, 'bulb')}</span>
         </button>
         <button type="button" class="cv-back-to-chat-btn"
                 onclick="closeCaseView(true)">Back to chat</button>
@@ -1708,18 +1741,15 @@ ${isSportsHomepage ? contextualBetslipSection : ''}
 }
 
 function handleReaction(btn, type) {
-  const caseKey = currentCaseId + '-' + type;
-  const countEl = btn.querySelector('.cv-reaction-count');
+  if (!currentCaseId) return;
+  if (hasCvUserReacted(currentCaseId, type)) return;
 
-  if (btn.classList.contains('reacted')) {
-    btn.classList.remove('reacted');
-    reactionCounts[caseKey] = Math.max(0,
-      (reactionCounts[caseKey] || 0) - 1);
-  } else {
-    btn.classList.add('reacted');
-    reactionCounts[caseKey] = (reactionCounts[caseKey] || 0) + 1;
-  }
-  countEl.textContent = reactionCounts[caseKey];
+  const countEl = btn.querySelector('.cv-reaction-count');
+  const next = getCvReactionCount(currentCaseId, type) + 1;
+  setCvReactionCount(currentCaseId, type, next);
+  setCvUserReacted(currentCaseId, type);
+  btn.classList.add('reacted');
+  if (countEl) countEl.textContent = next;
 }
 
 function renderCaseViewTab() {
