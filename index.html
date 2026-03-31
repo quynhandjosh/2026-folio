@@ -14,12 +14,12 @@
     --sidebar-muted: rgba(232,227,217,0.45);
     --sidebar-hover: rgba(255,255,255,0.07);
     --sidebar-active: rgba(255,255,255,0.12);
-    --main-bg: #fff4e3;
+    --main-bg: #fff9f1;
     --text-primary: #1A1915;
     --text-muted: #6B6760;
     --text-hint: #9B9690;
     --border: rgba(0,0,0,0.09);
-    --user-bubble: #ebdcbe;
+    --user-bubble: #f3ead8;
     --card-bg: #fffbf6;
     --tag-bg: rgba(0,0,0,0.06);
     --accent-orange: #c26400;
@@ -429,8 +429,6 @@
 
   .cv-placeholder {
     background: #F0EDE8;
-    border: 0.5px dashed rgba(0, 0, 0, 0.15);
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -440,44 +438,44 @@
 
   .cv-hero {
     width: 100%;
-    aspect-ratio: 1320 / 598;
-    height: auto;
-    min-height: calc(192px * 1.15);
   }
 
-  .cv-hero img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
+  .cv-hero:has(> img) {
+    padding: 0;
     display: block;
+    background: transparent;
   }
 
   .cv-thumbs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: minmax(var(--cv-thumbs-min-height, 96px), auto);
     gap: 16px;
-    align-items: stretch;
+    align-items: start;
   }
 
   .cv-thumbs .cv-placeholder {
     min-width: 0;
-    min-height: 100%;
-    height: 100%;
   }
 
   .cv-thumbs .cv-placeholder:has(> img) {
     padding: 0;
     display: block;
+    background: transparent;
   }
 
-  .cv-thumbs .cv-placeholder > img {
+  .cv-flow-large {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 12px;
+  }
+
+  .cv-flow-large:has(> img) {
+    padding: 0;
+    display: block;
+    background: transparent;
+  }
+
+  .case-view .cv-content img {
+    width: 100%;
+    height: auto;
     display: block;
   }
 
@@ -562,19 +560,6 @@
     line-height: 1.55;
     flex: 1;
     min-width: 0;
-  }
-
-  .cv-flow-large {
-    width: 100%;
-    min-height: 280px;
-  }
-
-  .cv-flow-large > img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    object-position: center;
-    display: block;
   }
 
   .cv-meta {
@@ -1509,30 +1494,6 @@ const suggestionsEl = document.getElementById('suggestions-area');
 const mainInner = document.getElementById('main-inner');
 const caseViewEl = document.getElementById('case-view');
 const cvContentEl = document.getElementById('cv-content');
-let cvHighlightsResizeObserver = null;
-
-function syncCvThumbsHeight() {
-  const highlights = cvContentEl.querySelector('.cv-highlights');
-  const thumbs = cvContentEl.querySelector('.cv-thumbs');
-  if (!highlights || !thumbs) return;
-  const h = highlights.offsetHeight;
-  if (h < 1) return;
-  thumbs.style.setProperty('--cv-thumbs-min-height', h + 'px');
-}
-
-function bindCvThumbsHeightSync() {
-  if (cvHighlightsResizeObserver) {
-    cvHighlightsResizeObserver.disconnect();
-    cvHighlightsResizeObserver = null;
-  }
-  const highlights = cvContentEl.querySelector('.cv-highlights');
-  if (!highlights) return;
-  requestAnimationFrame(() => {
-    syncCvThumbsHeight();
-    cvHighlightsResizeObserver = new ResizeObserver(syncCvThumbsHeight);
-    cvHighlightsResizeObserver.observe(highlights);
-  });
-}
 const cvFooterEl = document.getElementById('cv-footer');
 const cvTitleEl = document.getElementById('cv-title');
 let suggestionsHideTimer = null;
@@ -1716,7 +1677,6 @@ function renderCaseViewTab() {
   if (!c) return;
   cvContentEl.innerHTML = buildCvOverviewHtml(c);
   cvContentEl.scrollTop = 0;
-  bindCvThumbsHeightSync();
 }
 
 function populateCaseFooter(activeId) {
@@ -1811,10 +1771,6 @@ function handleChatFollowupReaction(btn) {
 }
 
 function closeCaseView(showSuggestionsAfter) {
-  if (cvHighlightsResizeObserver) {
-    cvHighlightsResizeObserver.disconnect();
-    cvHighlightsResizeObserver = null;
-  }
   const closedCaseId = currentCaseId;
   currentCaseId = null;
   caseViewEl.hidden = true;
