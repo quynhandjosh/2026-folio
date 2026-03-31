@@ -19,8 +19,8 @@
     --text-muted: #6B6760;
     --text-hint: #9B9690;
     --border: rgba(0,0,0,0.09);
-    --user-bubble: #ECEAE6;
-    --card-bg: #FFFFFF;
+    --user-bubble: #ebdcbe;
+    --card-bg: #fffbf6;
     --tag-bg: rgba(0,0,0,0.06);
     --accent-orange: #c26400;
     --accent-pink: #C85B8A;
@@ -964,6 +964,51 @@
     max-width: 100%;
   }
 
+  .msg-followup-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .msg-reaction-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 0.5px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 15px;
+    line-height: 1.2;
+    cursor: pointer;
+    background: var(--tag-bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.12s ease, border-color 0.12s ease;
+  }
+
+  .msg-reaction-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.14);
+  }
+
+  .msg-reaction-btn.msg-reaction-active {
+    background: rgba(212, 115, 10, 0.12);
+    border-color: rgba(212, 115, 10, 0.35);
+  }
+
+  .msg-reaction-count {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 0.5ch;
+  }
+
+  .msg-reaction-btn.msg-reaction-active .msg-reaction-count {
+    color: #D4730A;
+  }
+
   /* user bubble */
   .user-row { display: flex; justify-content: flex-end; }
   .user-bubble {
@@ -1717,38 +1762,78 @@ function openCaseView(id) {
   mainInner.hidden = true;
 }
 
+const caseCloseFollowupById = {
+  'sports-tracker': {
+    text: 'This is a first-to-market feature that since has been replicated by our competitors. I was a design owner of this feature for over 2 years! This is how I\'ve learnt about every single sports and how they score so I can design the most efficient tracker template. How do you find this case study?',
+    emojis: ['🔥', '👍', '💡']
+  },
+  'sports-homepage': {
+    text: 'This is an AI-led exploratory that brings me so much joy designing. I have fun mocking up glass effects in Figma while my teammate drives prototyping with Cursor AI. Is this A+ for our effort?',
+    emojis: ['💯', '❤️', '💡']
+  },
+  'landscape': {
+    text: 'I was sweating with this project. You can overthink so many things without user validation. At the end of the day, I find simplicity work well and I\'ve grown so much as a designer working in this piece.',
+    emojis: ['👍', '❤️', '💡']
+  },
+  'feed-profile': {
+    text: 'Everyone suddenly seems to have a say in design when we bring social media into wagering app. This has been a fun project to work on. What are your thoughts on it?',
+    emojis: ['😂', '👍', '👌']
+  }
+};
+
+function escapeChatFollowupText(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function buildCaseCloseFollowupHtml(closedCaseId) {
+  const spec = caseCloseFollowupById[closedCaseId];
+  if (!spec) return null;
+  const blockId = 'cfu-' + Date.now() + '-' + Math.random().toString(36).slice(2, 9);
+  const esc = escapeChatFollowupText(spec.text);
+  const reactions = spec.emojis.map((emoji, i) =>
+    `<button type="button" class="msg-reaction-btn" data-cfu="${blockId}" data-ri="${i}" onclick="handleChatFollowupReaction(this)">${emoji} <span class="msg-reaction-count">0</span></button>`
+  ).join('');
+  return `${esc}<div class="msg-followup-reactions">${reactions}</div>`;
+}
+
+function handleChatFollowupReaction(btn) {
+  const blockId = btn.getAttribute('data-cfu');
+  const ri = btn.getAttribute('data-ri');
+  if (blockId == null || ri == null) return;
+  const key = blockId + '-' + ri;
+  reactionCounts[key] = (reactionCounts[key] || 0) + 1;
+  btn.classList.add('msg-reaction-active');
+  const countEl = btn.querySelector('.msg-reaction-count');
+  if (countEl) countEl.textContent = reactionCounts[key];
+}
+
 function closeCaseView(showSuggestionsAfter) {
   if (cvHighlightsResizeObserver) {
     cvHighlightsResizeObserver.disconnect();
     cvHighlightsResizeObserver = null;
   }
+  const closedCaseId = currentCaseId;
   currentCaseId = null;
   caseViewEl.hidden = true;
   mainInner.hidden = false;
   cvFooterEl.innerHTML = '';
   if (!showSuggestionsAfter) return;
+  const followupHtml = closedCaseId ? buildCaseCloseFollowupHtml(closedCaseId) : null;
   const messagesEl = document.getElementById('messages');
   messagesEl.scrollTop = messagesEl.scrollHeight;
+  if (!followupHtml) {
+    scroll();
+    return;
+  }
+  addTyping();
   setTimeout(() => {
-    const allIds = Object.keys(caseData);
-    const unviewed = allIds.filter(id => !viewedCases.has(id));
-
-    if (unviewed.length > 0) {
-      const nextOptions = unviewed.slice(0, 2).map(id => ({
-        key: 'case-' + id,
-        label: caseData[id].title
-      }));
-      addOptions(
-        [...nextOptions, { key: 'contact', label: 'Get in touch' }],
-        "What's next?"
-      );
-    } else {
-      addOptions(
-        [{ key: 'contact', label: 'Get in touch' }],
-        "What's next?"
-      );
-    }
-  }, 200);
+    removeTyping();
+    addClaudeMsg(followupHtml);
+    scroll();
+  }, 900);
 }
 
 document.getElementById('cv-back').addEventListener('click', () => closeCaseView(true));
@@ -2000,13 +2085,6 @@ function handleOption(key) {
     addTyping();
     setTimeout(() => {
       removeTyping();
-      addClaudeMsg(`Here's the quick version of <strong>${c.title}</strong> — the full story is in the panel.
-      <ul style="margin-top: 10px; padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
-        <li><strong>Problem:</strong> ${c.problem}</li>
-        <li><strong>Outcome:</strong> ${c.stat} — ${c.action}</li>
-        <li><strong>Reflection:</strong> ${c.reflection}</li>
-      </ul>`);
-
       openCaseView(id);
     }, 1100);
 
