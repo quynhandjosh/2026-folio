@@ -1766,13 +1766,15 @@ function populateCaseFooter(activeId) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
   const prevSlot = prevId
-    ? `<button type="button" class="cv-nav-btn cv-nav-prev" data-case-id="${prevId}">
+    ? `<button type="button" class="cv-nav-btn cv-nav-prev" data-case-id="${prevId}"
+        onclick="window.va && window.va('event', { name: 'case_study_click', data: { study: '${caseStudyClickAnalyticsName[prevId]}' } })">
         <span class="cv-nav-label">Previous</span>
         <span class="cv-nav-title">${esc(caseData[prevId].title)}</span>
       </button>`
     : '<div class="cv-nav-spacer" aria-hidden="true"></div>';
   const nextSlot = nextId
-    ? `<button type="button" class="cv-nav-btn cv-nav-next" data-case-id="${nextId}">
+    ? `<button type="button" class="cv-nav-btn cv-nav-next" data-case-id="${nextId}"
+        onclick="window.va && window.va('event', { name: 'case_study_click', data: { study: '${caseStudyClickAnalyticsName[nextId]}' } })">
         <span class="cv-nav-label">Next</span>
         <span class="cv-nav-title">${esc(caseData[nextId].title)}</span>
       </button>`
@@ -1970,6 +1972,13 @@ const caseData = {
   }
 };
 
+const caseStudyClickAnalyticsName = {
+  'sports-tracker': 'Bet Tracker',
+  'landscape': 'Landscape Wayfinding',
+  'sports-homepage': 'Sports Homepage',
+  'feed-profile': 'Feed Content'
+};
+
 // State
 let currentSection = 'intro';
 const viewedCases = new Set();
@@ -2126,7 +2135,7 @@ function handleOption(key) {
     setTimeout(() => {
       removeTyping();
       const cards = Object.entries(caseData).map(([id, c]) => `
-        <div class="case-card" onclick="handleOption('case-${id}')">
+        <div class="case-card" onclick="window.va && window.va('event', { name: 'case_study_click', data: { study: '${caseStudyClickAnalyticsName[id]}' } }); handleOption('case-${id}')">
           <div class="case-card-title">${c.title}</div>
           <div class="case-card-impact">↑ ${c.impact}</div>
           <span class="tag">${c.type}</span> <span class="tag">${c.platform}</span>
