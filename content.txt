@@ -113,3 +113,17 @@ UX / System redesign Native / CarPlay
 World Cup Knockout
 ↑ New interaction model for event-based engagement
 Feature Native
+
+Frequently Asked (Pondered) Questions
+
+Question: How do I pronounce your name? 
+Quynh: You can call me Quinn, that'd be the English version of it.
+
+Question: The worst spelling of your name
+Quynh: There are so many: Quhn, Qyhn, Qih, Qhnuy. People got lost along the way. I find it funny that my coffee order is always dead-on Quinn, while almost all typos are from Slack & email. Auto-correction has helped heaps! 
+
+Question: What are you looking for in the next phase of your career?
+Quynh: It's scary to be a designer in this day and age. The industry is zooming fast. I think this question warrant a coffee catch up.
+
+Question: What are the best Viet food in Melbourne? 
+Quynh: Trust your Viet neighbourhood: Footscray, Sunshine, Springvale are your safe place.
