@@ -1428,6 +1428,15 @@
       min-height: 48px;
     }
   }
+
+  .cv-img-clickable { cursor: zoom-in; transition: opacity 0.15s ease; display: block; width: 100%; height: auto; }
+  .cv-img-clickable:hover { opacity: 0.88; }
+  .img-modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.72); z-index: 50; align-items: center; justify-content: center; border-radius: inherit; }
+  .img-modal-overlay.active { display: flex; }
+  .img-modal-box { background: transparent; border-radius: 10px; position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 16px; padding: 16px; max-width: 100%; max-height: 100%; }
+  .img-modal-close { width: 28px; height: 28px; border-radius: 6px; border: 0.5px solid rgba(0,0,0,0.15); background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; color: var(--text-muted); }
+  .img-modal-close:hover { background: #fff; color: var(--text-primary); }
+  .img-modal-img { max-width: 100%; max-height: calc(100vh - 80px); width: auto; height: auto; display: block;}
 </style>
   <!-- 
     Avatar: add your photo as assets/avatar.jpg
@@ -1548,6 +1557,7 @@
     </div>
   </main>
 </div><!-- /.app -->
+<div class="img-modal-overlay" id="img-modal-overlay"><div class="img-modal-box"><button class="img-modal-close" id="img-modal-close" aria-label="Close image" type="button"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 1.5L10.5 10.5M10.5 1.5L1.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><img class="img-modal-img" id="img-modal-img" src="" alt=""></div></div>
 </div><!-- /.window-wrapper -->
 
 <script>
@@ -1817,6 +1827,7 @@ function openCaseView(id) {
   populateCaseFooter(id);
   renderCaseViewTab();
   caseViewEl.hidden = false;
+  setTimeout(() => { caseViewEl.querySelectorAll('.cv-content img').forEach(img => { img.classList.add('cv-img-clickable'); img.addEventListener('click', function() { openImgModal(this.src, this.alt); }); }); }, 0);
   mainInner.hidden = true;
 }
 
@@ -2226,6 +2237,21 @@ async function init() {
 }
 
 init();
+
+const imgModalOverlay = document.getElementById('img-modal-overlay');
+const imgModalImg = document.getElementById('img-modal-img');
+const imgModalClose = document.getElementById('img-modal-close');
+function openImgModal(src, alt) {
+  imgModalImg.src = src;
+  imgModalImg.alt = alt || '';
+  imgModalOverlay.classList.add('active');
+}
+function closeImgModal() {
+  imgModalOverlay.classList.remove('active');
+  imgModalImg.src = '';
+}
+imgModalClose.addEventListener('click', closeImgModal);
+imgModalOverlay.addEventListener('click', function(e) { if (e.target === imgModalOverlay) closeImgModal(); });
 </script>
 </body>
 </html>
