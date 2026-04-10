@@ -1883,6 +1883,63 @@ function handleChatFollowupReaction(btn) {
     btn.classList.add('msg-reaction-active');
     if (countEl) countEl.textContent = reactionCounts[key];
   }
+  appendExploreSuggestionsAfterFollowup(btn, blockId);
+}
+
+function hideExploreSuggestionsGroup(el) {
+  const root = el && el.closest && el.closest('.msg-explore-suggestions-after-followup');
+  if (!root) return;
+  const inner = root.querySelector('.suggestions-inner');
+  if (!inner) return;
+  inner.setAttribute('hidden', '');
+  inner.style.display = 'none';
+}
+
+function buildExploreSuggestionsInlineHtml() {
+  const unviewed = Object.keys(caseData).filter(id => !viewedCases.has(id));
+  const headerText = 'Would you like to continue explore:';
+  const headerHtml = `<div class="suggestions-header">${escapeChatFollowupText(headerText)}</div>`;
+  const maxTotal = 3;
+  const buttons = [];
+  let n = 1;
+  for (const id of unviewed) {
+    if (buttons.length >= maxTotal - 1) break;
+    const c = caseData[id];
+    const analytics = caseStudyClickAnalyticsName[id];
+    const escLabel = escapeChatFollowupText(c.title);
+    buttons.push(
+      `<button type="button" class="suggestion-btn" onclick="hideExploreSuggestionsGroup(this); window.va && window.va('event', { name: 'case_study_click', data: { study: '${analytics}' } }); handleOption('case-${id}')"><span class="suggestion-num" aria-hidden="true">${n}</span><span class="suggestion-label">${escLabel}</span></button>`
+    );
+    n++;
+  }
+  if (buttons.length < maxTotal) {
+    buttons.push(
+      `<button type="button" class="suggestion-btn" onclick="hideExploreSuggestionsGroup(this); handleOption('contact')"><span class="suggestion-num" aria-hidden="true">${n}</span><span class="suggestion-label">Get in touch</span></button>`
+    );
+  }
+  return `<div class="suggestions-inner">${headerHtml}<div class="suggestions-list">${buttons.join('')}</div></div>`;
+}
+
+function appendExploreSuggestionsAfterFollowup(btn, blockId) {
+  if (followupExploreSuggestionsShown.has(blockId)) return;
+  const msgGroup = btn.closest('.msg-group');
+  if (!msgGroup) return;
+  followupExploreSuggestionsShown.add(blockId);
+  removeTyping();
+  addTyping();
+  setTimeout(() => {
+    removeTyping();
+    const g = document.createElement('div');
+    g.className = 'msg-group msg-explore-suggestions-after-followup';
+    g.innerHTML = `
+    <div class="msg-sender"><div class="sender-orb" style="overflow: hidden; flex-shrink: 0;">
+      <img src="assets/avatar.jpg" alt="Quynh" class="avatar-img"
+           onerror="this.style.display='none'">
+    </div> Quynh</div>
+    <div class="msg-body">${buildExploreSuggestionsInlineHtml()}</div>`;
+    msgGroup.insertAdjacentElement('afterend', g);
+    scroll();
+  }, 600);
 }
 
 function closeCaseView(showSuggestionsAfter) {
@@ -1891,10 +1948,9 @@ function closeCaseView(showSuggestionsAfter) {
   caseViewEl.hidden = true;
   mainInner.hidden = false;
   cvFooterEl.innerHTML = '';
+  scrollMainInnerToBottom();
   if (!showSuggestionsAfter) return;
   const followupHtml = closedCaseId ? buildCaseCloseFollowupHtml(closedCaseId) : null;
-  const messagesEl = document.getElementById('messages');
-  mainInner.scrollTop = mainInner.scrollHeight;
   if (!followupHtml) {
     scroll();
     return;
@@ -2008,6 +2064,7 @@ const caseStudyClickAnalyticsName = {
 // State
 let currentSection = 'intro';
 const viewedCases = new Set();
+const followupExploreSuggestionsShown = new Set();
 const windowWrapper = document.querySelector('.window-wrapper');
 const mobileQuery = window.matchMedia('(max-width: 700px)');
 
@@ -2053,6 +2110,7 @@ function resetChat() {
   removeOptions();
   closeCaseView();
   viewedCases.clear();
+  followupExploreSuggestionsShown.clear();
   messages.innerHTML = '';
   currentSection = 'intro';
   setActiveNav('intro');
@@ -2144,8 +2202,34 @@ function removeOptions() {
   }, 200);
 }
 
+function scrollMainInnerToBottom() {
+  const prevBehavior = mainInner.style.scrollBehavior;
+  mainInner.style.scrollBehavior = 'auto';
+
+  const apply = () => {
+    const bottomEl = messages.lastElementChild || suggestionsEl;
+    if (bottomEl) {
+      bottomEl.scrollIntoView({ block: 'end', behavior: 'auto' });
+    }
+    mainInner.scrollTop = mainInner.scrollHeight;
+    const root = document.scrollingElement;
+    if (root) {
+      root.scrollTop = root.scrollHeight;
+    }
+  };
+
+  apply();
+  requestAnimationFrame(() => {
+    requestAnimationFrame(apply);
+  });
+  setTimeout(() => {
+    apply();
+    mainInner.style.scrollBehavior = prevBehavior;
+  }, 50);
+}
+
 function scroll() {
-  setTimeout(() => { mainInner.scrollTop = mainInner.scrollHeight; }, 50);
+  scrollMainInnerToBottom();
 }
 
 // ── Interaction handlers ──
