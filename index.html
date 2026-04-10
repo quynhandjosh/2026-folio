@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <script defer src="/_vercel/insights/script.js"></script>
 <head>
+  <script defer src="/_vercel/insights/script.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title> Quynh - Product Experience Designer</title>
@@ -909,7 +909,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.32);
-    z-index: 4;
+    z-index: 19;
   }
 
   /* ── Messages ── */
@@ -1342,10 +1342,10 @@
       top: 0;
       left: 0;
       height: 100dvh;
-      width: 84vw;
-      max-width: 320px;
+      width: 100vw;
+      max-width: 100vw;
       min-width: 0;
-      z-index: 5;
+      z-index: 20;
       transform: translateX(-100%);
       opacity: 1;
       transition: transform 0.2s ease;
@@ -1357,6 +1357,14 @@
 
     .window-wrapper.sidebar-open .sidebar-overlay {
       display: block;
+    }
+
+    .window-wrapper.sidebar-open .main {
+      visibility: hidden;
+    }
+
+    .window-wrapper.sidebar-open #suggestions-area {
+      display: none !important;
     }
 
     .topbar {
@@ -1457,6 +1465,13 @@
         </div>
       </div>
       <button class="sidebar-header-toggle desktop-only" type="button" aria-label="Collapse sidebar" onclick="toggleDesktopSidebar()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+          <path d="M1.5 3C1.5 2.172 2.172 1.5 3 1.5H5.5V13.5H3C2.172 13.5 1.5 12.828 1.5 12V3Z" fill="currentColor" fill-opacity="0.45"/>
+          <rect x="1.5" y="1.5" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.15"/>
+          <path d="M5.5 1.5V13.5" stroke="currentColor" stroke-width="1.15"/>
+        </svg>
+      </button>
+      <button class="sidebar-header-toggle mobile-only" type="button" aria-label="Close sidebar" onclick="closeSidebarOnMobile()">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
           <path d="M1.5 3C1.5 2.172 2.172 1.5 3 1.5H5.5V13.5H3C2.172 13.5 1.5 12.828 1.5 12V3Z" fill="currentColor" fill-opacity="0.45"/>
           <rect x="1.5" y="1.5" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.15"/>
